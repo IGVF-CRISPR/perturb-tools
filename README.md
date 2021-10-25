@@ -1,4 +1,4 @@
-# ![perturb-tools_logo](docs/images/perturb-tools_logo.png)
+# ![perturb-tools_logo](docs/images/perturb_tools_logo.svg)
 
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/perturb-tools.svg)](https://pypi.python.org/pypi/perturb-tools/)
 [![PyPI version](https://badge.fury.io/py/perturb-tools.svg)](https://badge.fury.io/py/perturb-tools)
