@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.3.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 612 792" style="enable-background:new 0 0 612 792;" xml:space="preserve">
+<style type="text/css">
+	.st0{font-family:'Avenir-Book';}
+	.st1{font-size:36px;}
+	.st2{fill:none;stroke:#000000;stroke-miterlimit:10;}
+	.st3{fill:#BCBEC0;stroke:#BCBEC0;stroke-width:2;stroke-miterlimit:10;}
+	.st4{fill:#8B5BA4;}
+	.st5{fill:url(#SVGID_1_);}
+	.st6{fill:#22B551;stroke:#12AF51;stroke-miterlimit:10;}
+	.st7{fill:#22B551;}
+	.st8{fill:#F12131;stroke:#F12131;stroke-miterlimit:10;}
+	.st9{fill:#F12131;}
+</style>
+<text transform="matrix(1 0 0 1 -43.056 453.386)" class="st0 st1">perturb-tools</text>
+<g>
+	<g>
+		<g>
+			<g>
+				<g>
+					<polygon points="304.6,427.87 321.63,427.88 321.64,431.93 329.61,427.32 321.62,422.72 321.63,426.77 304.61,426.76 					"/>
+				</g>
+			</g>
+		</g>
+		<line class="st2" x1="305.07" y1="426.73" x2="305.07" y2="444.92"/>
+	</g>
+	<path class="st2" d="M313.54,414.98"/>
+	<line class="st3" x1="173.03" y1="444.04" x2="381.92" y2="444.04"/>
+	<path class="st4" d="M235.83,451.54h-0.36c-2.66,0-4.82-2.16-4.82-4.82v-5.36c0-2.66,2.16-4.82,4.82-4.82h0.36
+		c2.66,0,4.82,2.16,4.82,4.82v5.36C240.64,449.38,238.49,451.54,235.83,451.54z"/>
+	<path class="st4" d="M192.69,451.54h-0.36c-2.66,0-4.82-2.16-4.82-4.82v-5.36c0-2.66,2.16-4.82,4.82-4.82h0.36
+		c2.66,0,4.82,2.16,4.82,4.82v5.36C197.5,449.38,195.35,451.54,192.69,451.54z"/>
+	<path class="st4" d="M290.29,451.54h-0.36c-2.66,0-4.82-2.16-4.82-4.82v-5.36c0-2.66,2.16-4.82,4.82-4.82h0.36
+		c2.66,0,4.82,2.16,4.82,4.82v5.36C295.11,449.38,292.95,451.54,290.29,451.54z"/>
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="348.1921" y1="505.6434" x2="537.7139" y2="396.223">
+		<stop  offset="0.1092" style="stop-color:#FCB13A"/>
+		<stop  offset="0.4232" style="stop-color:#FDD697"/>
+		<stop  offset="0.6963" style="stop-color:#FFF3E2"/>
+		<stop  offset="0.8218" style="stop-color:#FFFFFF"/>
+	</linearGradient>
+	<path class="st5" d="M591.23,451.54H318.57c-2.66,0-4.82-2.16-4.82-4.82v-5.36c0-2.66,2.16-4.82,4.82-4.82h272.66
+		c2.66,0,4.82,2.16,4.82,4.82v5.36C596.05,449.38,593.89,451.54,591.23,451.54z"/>
+	<g>
+		<line class="st6" x1="243.81" y1="438.92" x2="243.81" y2="428.92"/>
+		<polygon class="st7" points="243.81,426.92 241.31,431.92 246.31,431.92 		"/>
+	</g>
+	<g>
+		<line class="st8" x1="200" y1="449.42" x2="200" y2="459.42"/>
+		<polygon class="st9" points="200,461.42 197.5,456.42 202.5,456.42 		"/>
+	</g>
+	<g>
+		<line class="st8" x1="297.61" y1="449.42" x2="297.61" y2="459.42"/>
+		<polygon class="st9" points="297.61,461.42 295.11,456.42 300.11,456.42 		"/>
+	</g>
+</g>
+</svg>
