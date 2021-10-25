@@ -1,6 +1,10 @@
 # ![perturb-tools_logo](images/perturb-tools_logo.png)
 
-Analysis Framework for Pooled CRISPR Genome Editing Screens
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/perturb-tools.svg)](https://pypi.python.org/pypi/perturb-tools/)
+[![PyPI version](https://badge.fury.io/py/perturb-tools.svg)](https://badge.fury.io/py/perturb-tools)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+## Analysis Framework for Pooled CRISPR Genome Editing Screens
 
 ```python
 import perturb_tools as pt
