@@ -1,5 +1,4 @@
-[!perturb-tools_logo](./images/perturb-tools_logo.png)
----
+# ![perturb-tools_logo](images/perturb-tools_logo.png)
 
 Analysis Framework for Pooled CRISPR Genome Editing Screens
 
