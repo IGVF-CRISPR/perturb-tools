@@ -1,0 +1,22 @@
+TTGAACCG,pDNA
+CCGAGTTA,pDNA
+TTGAGTAT,Day 1 + Drug
+CCTCCAAT,Day 1 + Drug
+GGTCACCG,Day 1 - Drug
+TTGACAAT,Day 1 - Drug
+AATCCAAT,Day 2 + Drug
+TTCTCATA,Day 2 + Drug
+AATCCACG,Day 2 - Drug
+AATCGTGC,Day 2 - Drug
+AAGAACTA,Day 4 + Drug
+CCAGTGAT,Day 4 + Drug
+GGTCGTGC,Day 4 - Drug
+TTAGACCG,Day 4 - Drug
+GGTCCACG,Day 8 + Drug
+CCGAACTA,Day 8 + Drug
+AACTCACG,Day 8 - Drug
+AATCACTA,Day 8 - Drug
+GGTCCATA,Day 16 + Drug
+GGTCTGCG,Day 16 + Drug
+CCAGTGGC,Day 16 - Drug
+AACTTGCG,Day 16 - Drug
