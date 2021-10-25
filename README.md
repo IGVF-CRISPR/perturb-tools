@@ -20,5 +20,6 @@ Genome Editing Screen composed of n_guides x n_conditions = 100 x 3
 
 
 ## Data Structure
-This format and organization of metadata surrounding a multidimensional experiment is inspired by [AnnData](https://anndata.readthedocs.io/en/stable/), a useful solution for the analogous organization of single-cell data.  
+This format and organization of metadata surrounding a multidimensional experiment is inspired by [AnnData](https://anndata.readthedocs.io/en/stable/), a useful solution for the analogous organization of single-cell data.
+<br></br>
 <img src="docs/images/screen_data.png" width="700"/>
