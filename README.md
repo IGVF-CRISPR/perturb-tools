@@ -13,6 +13,7 @@ screen = pt.Screen(X)
 ```
 ```
 Genome Editing Screen composed of n_guides x n_conditions = 100 x 3
+
   guides: 'experiment', 'sequence', 'target'
   conditions: 'drug', 'control', 'initial'
   layers: 'raw_counts', 'Log2Norm_counts'
