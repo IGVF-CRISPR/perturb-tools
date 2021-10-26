@@ -14,7 +14,7 @@ screen = pt.Screen(X)
 ```
 Genome Editing Screen composed of: n_guides x n_conditions = 946 x 12
 
-   guides:    'Row Barcode', 'Row Barcode IDs', 'experiment', 'sequence', 'target', 'predicted_ABE_outcome', 'predicted_CBE_outcome'
+   guides:    'barcode', 'barcode_id', 'experiment', 'sequence', 'target', 'predicted_ABE_outcome', 'predicted_CBE_outcome'
    condit:    'conditions'
    condit_m:  'barcode_counts', 'unexpected_sequences'
    condit_p:  'correlation'
