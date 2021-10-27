@@ -1,3 +1,9 @@
+
+import pandas as pd
+import os
+
+import vintools as v
+
 def _read_poolq_quality_file(
     poolq_outs_path,
     analysis_dir,
@@ -6,8 +12,8 @@ def _read_poolq_quality_file(
     quality_filename="quality.txt",
     poolq_quality_keys=[
         "metadata",
-        "SampleBarcodeReadCounts",
-        "CommonSampleBarcodeReadCounts",
+        "bc_readcounts",
+        "common_barcodes",
     ],
     verbose=False,
     silent=True,
@@ -18,7 +24,7 @@ def _read_poolq_quality_file(
     QualityDataFrames = {}
 
     quality_file = _read_file_in_dir(poolq_outs_path, quality_filename)
-    PoolQ_QualityDict = _create_EmptyDict(poolq_quality_keys)
+    PoolQ_QualityDict = v.ut.EmptyDict(poolq_quality_keys)
 
     for n, line in enumerate(quality_file):
         line = _parse_line(line)
@@ -27,25 +33,25 @@ def _read_poolq_quality_file(
                 PoolQ_QualityDict["metadata"][n] = line[0].split(":")
             elif len(line) > 2:
                 _read_count_for_df(
-                    PoolQ_QualityDict["SampleBarcodeReadCounts"], n, line
+                    PoolQ_QualityDict["bc_readcounts"], n, line
                 )
             elif len(line) == 2:
                 _read_count_for_df(
-                    PoolQ_QualityDict["CommonSampleBarcodeReadCounts"], n, line
+                    PoolQ_QualityDict["common_barcodes"], n, line
                 )
             else:
                 if verbose:
                     print("WARNING: LINE NOT ASSIGNED: {}".format(line))
 
     PoolQ_QualityDict["metadata"]["cols"] = ["metric", "statistic"]
-    PoolQ_QualityDict["CommonSampleBarcodeReadCounts"]["cols"] = ["barcode", "count"]
+    PoolQ_QualityDict["common_barcodes"]["cols"] = ["barcode", "count"]
 
     quality_dfs = {}
     for key in poolq_quality_keys:
         quality_dfs[key] = _make_df_with_colnames(PoolQ_QualityDict[key])
     v.ut.mkdir_flex(analysis_dir)
     workbook_path = os.path.join(analysis_dir, workbook_path)
-    _write_df_to_excel(
+    v.ut.df_to_excel(
         list(quality_dfs.values()),
         workbook_path,
         sheetnames=poolq_quality_keys,
@@ -60,7 +66,7 @@ def _read_poolq_quality_file(
 def _assemble_PoolQ_Quality_Dict():
 
     return _create_EmptyDict(
-        keys=["metadata", "bc_counts", "CommonSampleBarcodeReadCounts"]
+        keys=["metadata", "bc_readcounts", "common_barcodes"]
     )
 
 
@@ -79,16 +85,8 @@ def _read_file_in_dir(dir_path, filename):
 
     """Useful when you have multiple paths in a dir and you want to reuse the dir name. Uses the FileHandler class."""
 
-    filepath = os.path.join(poolq_outs_path, quality_filename)
-    f = FileHandler(filepath=filepath, verbose=False)
-    return f.read(return_file=True)
-
-def _read_file_in_dir(dir_path, filename):
-
-    """Useful when you have multiple paths in a dir and you want to reuse the dir name. Uses the FileHandler class."""
-
-    filepath = os.path.join(poolq_outs_path, quality_filename)
-    f = FileHandler(filepath=filepath, verbose=False)
+    filepath = os.path.join(dir_path, filename)
+    f = v.ut.FileHandler(filepath=filepath, verbose=False)
     return f.read(return_file=True)
 
 

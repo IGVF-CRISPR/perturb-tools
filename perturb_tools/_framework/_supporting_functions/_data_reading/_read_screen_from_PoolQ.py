@@ -1,76 +1,137 @@
-
 # _read_screen_from_PoolQ.py
 __module_name__ = "_read_screen_from_PoolQ.py"
 __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu",])
 
+import pandas as pd
+import numpy as np
+import vintools as v
+
+from ._read_poolq_quality_file import _read_poolq_quality_file
+
+def _assemble_pandas_dict(filepaths, keys=False, sep="\t", **kwargs):
+
+    """"""
+
+    PandasDict = {}
+    for i, path in enumerate(filepaths):
+        if keys:
+            df_key = keys[i]
+        else:
+            df_key = keys[i]
+        PandasDict[df_key] = pd.read_csv(path, sep, **kwargs)
+
+    return PandasDict
 
 
-# def _read_poolq(poolq_outs_path):
+def _find_key_path(outs_dict, key):
+    
+    key_loc = np.where(np.array(list(outs_dict.keys())) == key)[0][0] - 1
 
-#     """
-
-#     Returns:
-#     --------
-#     screen
-
-#     Notes:
-#     ------
-#     (1) screen is an "AnnData like" option.
-
-#     """
-
-#     files = glob.glob(poolq_outs_path + "*")
-
-#     AllFiles = {}
-#     AllFiles["full_paths"] = []
-
-#     for filepath in files:
-#         AllFiles["full_paths"].append(filepath)
-#         f_ = FileHandler(filepath)
-#         AllFiles[f] = f_.read(return_file=True)
-
-#     return AllFiles
+    return outs_dict["paths"][key_loc]
 
 
-def _read_screen_from_PoolQ(poolq_outs_path):
+def _read_poolq_counts_dfs(
+    poolq_outs, counts_keys=["counts", "lognormalized-counts"], **kwargs
+):
 
-    PoolQ_outs = _glob_dict(poolq_outs_path)
+    """"""
 
-    counts_df = pd.read_csv(
-        PoolQ_outs["paths"][4], sep="\t", index_col=[0, 1]
-    )  # has multiindex
+    filepaths = []
+    for key in counts_keys:
+        filepaths.append(_find_key_path(poolq_outs, key))
+    
+    pd_dict = _assemble_pandas_dict(filepaths, keys=counts_keys, sep="\t", **kwargs)
 
-    screen = {}
-    screen["X"] = counts_df.values
-    screen["guides"] = counts_df.index.to_frame().reset_index(drop=True)
-    screen["condit"] = pd.DataFrame(counts_df.columns[2:], columns=["conditions"])
-    screen["layers"] = {}
-    screen["layers"]["X_lognorm"] = pd.read_csv(
-        PoolQ_outs["paths"][3], sep="\t", index_col=[0, 1]
+    return pd_dict
+
+def _load_parse_PoolQ_counts_df(
+    PoolQ_OutsDict, ScreenDict=False, counts_keys=["counts", "lognormalized-counts"]
+):
+
+    """
+    Load counts df (raw and lognorm) from PoolQ Dict. 
+    
+    Parameters:
+    -----------
+    PoolQ_OutsDict
+    
+    ScreenDict
+    
+    counts_keys
+    
+    Returns:
+    --------
+    ScreenDict
+    
+    Notes:
+    ------
+    """
+
+    if not ScreenDict: # initialize the dict if it does not exist
+        ScreenDict = v.ut.EmptyDict(["layers", "condit_p", "condit_m", "uns"])
+
+    df_dict = _read_poolq_counts_dfs(PoolQ_OutsDict, counts_keys)
+
+    ScreenDict["X"] = df_dict["counts"].values
+    ScreenDict["guides"] = df_dict["counts"][['Row Barcode', 'Row Barcode IDs']]
+    ScreenDict["guides"].columns = ['barcode', 'barcode_id']
+    ScreenDict["condit"] = pd.DataFrame(df_dict["counts"][2:], columns=["conditions"])
+    ScreenDict["layers"]["lognorm_counts"] = df_dict["lognormalized-counts"]
+
+    return ScreenDict
+
+def _compose_condit_mp(
+    ScreenDict, PoolQ_OutsDict, counts_keys=["barcode-counts", "unexpected-sequences"]
+):
+
+    """
+    Load counts df (raw and lognorm) from PoolQ Dict.
+
+    Parameters:
+    -----------
+    PoolQ_OutsDict
+
+    ScreenDict
+
+    counts_keys
+
+    Returns:
+    --------
+    ScreenDict
+
+    Notes:
+    ------
+    """
+    
+    ScreenDict["condit_m"] = _read_poolq_counts_dfs(
+        PoolQ_OutsDict, counts_keys, index_col=[0, 1, -1]
     )
+    ScreenDict["condit_p"] = _read_poolq_counts_dfs(PoolQ_OutsDict, ["correlation"], index_col=0)
 
-    screen["condit_p"] = {}
-    screen["condit_m"] = {}
-    screen["uns"] = {}
+    return ScreenDict
 
-    screen["condit_m"]["barcode_counts"] = pd.read_csv(
-        PoolQ_outs["paths"][1], sep="\t", index_col=[0, 1, -1]
-    )  # top 100 only?
-    screen["condit_m"]["unexpected_sequences"] = pd.read_csv(
-        PoolQ_outs["paths"][2], sep="\t", index_col=[0, 1, -1]
-    )
+
+def _compose_uns_from_quality_file(ScreenDict, PoolQ_OutsDict, poolq_outs_path, out_path):
 
     quality_dfs = _read_poolq_quality_file(
-        poolq_outs_path, analysis_dir="./newouts", return_df=True
+        poolq_outs_path, analysis_dir=out_path, return_df=True
     )
-    screen["condit_p"]["correlation"] = pd.read_csv(
-        PoolQ_outs["paths"][5], sep="\t", index_col=0
-    )
+    
+    ScreenDict["uns"]["run_info"] = PoolQ_OutsDict["runinfo"]
+    ScreenDict["uns"]["poolq3"] = PoolQ_OutsDict["poolq3"]
 
-    screen["uns"]["run_info"] = PoolQ_outs["runinfo"]
-    screen["uns"]["poolq3"] = PoolQ_outs["poolq3"]
     for key, _df in quality_dfs.items():
-        screen["uns"][str(key)] = _df
+        ScreenDict["uns"][str(key)] = _df
 
-    return screen
+    return ScreenDict
+
+def _read_screen_from_PoolQ(poolq_outs_path, analaysis_out_path="wokrbook.xlsx"):
+
+    PoolQ_OutsDict = v.ut.glob_dict(poolq_outs_path)
+    
+    ScreenDict = _load_parse_PoolQ_counts_df(PoolQ_OutsDict, ScreenDict=False, counts_keys=["counts", "lognormalized-counts"])
+    ScreenDict = _compose_condit_mp(ScreenDict, PoolQ_OutsDict, counts_keys=["barcode-counts", "unexpected-sequences"])
+    ScreenDict = _compose_uns_from_quality_file(ScreenDict, PoolQ_OutsDict, poolq_outs_path, out_path=analaysis_out_path)
+    
+    return ScreenDict
