@@ -12,11 +12,14 @@ import perturb_tools as pt
 screen = pt.Screen(X)
 ```
 ```
-Genome Editing Screen composed of n_guides x n_conditions = 100 x 3
+Genome Editing Screen composed of: n_guides x n_conditions = 946 x 12
 
-  guides: 'experiment', 'sequence', 'target'
-  conditions: 'drug', 'control', 'initial'
-  layers: 'raw_counts', 'Log2Norm_counts'
+   guides:    'barcode', 'barcode_id', 'experiment', 'sequence', 'target_id', 'pred_ABE_edit', 'pred_CBE_edit'
+   condit:    'conditions'
+   condit_m:  'barcode_counts', 'unexpected_sequences'
+   condit_p:  'correlation'
+   layers:    'X_lognorm'
+   uns:       'run_info', 'poolq3', 'metadata', 'SampleBarcodeReadCounts', 'CommonSampleBarcodeReadCounts'
 ```
 
 
