@@ -27,3 +27,11 @@ Genome Editing Screen composed of: n_guides x n_conditions = 946 x 12
 This format and organization of metadata surrounding a multidimensional experiment is inspired by [AnnData](https://anndata.readthedocs.io/en/stable/), a useful solution for the analogous organization of single-cell data.
 <br></br>
 <img src="docs/images/screendata.svg" width="600"/>
+
+### The three main components of this data strcuture:
+
+* **`screen.X`** (Numpy array)
+
+* **`screen.condit`** (pandas DataFrame) of shape: `[conditions x condition_annotation]`
+
+* **`screen.guides`** (pandas DataFrame) of shape: `[guides x guide_annotation]`
