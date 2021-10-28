@@ -4,7 +4,12 @@
 [![PyPI version](https://badge.fury.io/py/perturb-tools.svg)](https://badge.fury.io/py/perturb-tools)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-## Analysis Framework for Pooled CRISPR Genome Editing Screens
+**perturb-tools** is an **analysis framework for pooled CRISPR genome-editing screens**. Thus far, development has focused on local (i.e., not genome-wide) tiling screens with specific phenotypic readouts though expansion of this scope is of interest. 
+
+
+
+
+## Data Structure and Analysis Framework
 
 ```python
 import perturb_tools as pt
@@ -22,8 +27,6 @@ Genome Editing Screen composed of: n_guides x n_conditions = 946 x 12
    uns:       'run_info', 'poolq3', 'metadata', 'SampleBarcodeReadCounts', 'CommonSampleBarcodeReadCounts'
 ```
 
-
-## Data Structure
 This format and organization of metadata surrounding a multidimensional experiment is inspired by [AnnData](https://anndata.readthedocs.io/en/stable/), a useful solution for the analogous organization of single-cell data.
 <br></br>
 <img src="docs/images/screendata.svg" width="600"/>
@@ -35,6 +38,21 @@ This format and organization of metadata surrounding a multidimensional experime
 * **`screen.condit`** (pandas DataFrame) of shape: `[conditions x condition_annotation]`
 
 * **`screen.guides`** (pandas DataFrame) of shape: `[guides x guide_annotation]`
+
+## Installation
+**Install with `pip`**:
+```BASH
+pip install perturb_tools
+```
+
+**Install the development package**:
+```BASH
+# (1) clone this repository
+git clone https://github.com/mvinyard/perturb-tools.git
+
+# (2) install the local project in editable mode
+cd ./perturb-tools; pip install -e .
+```
 
 ## General analysis Steps
 
