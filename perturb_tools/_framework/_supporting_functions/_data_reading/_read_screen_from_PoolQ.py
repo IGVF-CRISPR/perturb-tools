@@ -70,14 +70,14 @@ def _load_parse_PoolQ_counts_df(
 
     if not ScreenDict: # initialize the dict if it does not exist
         ScreenDict = v.ut.EmptyDict(["layers", "condit_p", "condit_m", "uns"])
-
+        
     df_dict = _read_poolq_counts_dfs(PoolQ_OutsDict, counts_keys)
 
-    ScreenDict["X"] = df_dict["counts"].values
+    ScreenDict["X"] = df_dict["counts"].drop(["Row Barcode", "Row Barcode IDs"], axis=1).values
     ScreenDict["guides"] = df_dict["counts"][['Row Barcode', 'Row Barcode IDs']]
     ScreenDict["guides"].columns = ['barcode', 'barcode_id']
-    ScreenDict["condit"] = pd.DataFrame(df_dict["counts"][2:], columns=["conditions"])
-    ScreenDict["layers"]["lognorm_counts"] = df_dict["lognormalized-counts"]
+    ScreenDict["layers"]["lognorm_counts"] = df_dict["lognormalized-counts"].drop(["Row Barcode", "Row Barcode IDs"], axis=1)
+    ScreenDict["condit"] = pd.DataFrame(ScreenDict['layers']["lognorm_counts"].columns, columns=["Condition"])
 
     return ScreenDict
 
