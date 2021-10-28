@@ -40,5 +40,15 @@ This format and organization of metadata surrounding a multidimensional experime
 
 * [**Normalization**](perturb_tools/_normalization/README.md)
 * [**Arithmetic**](perturb_tools/_arithmetic/README.md)
+   * Calculating the mean, standard deviation, and log-fold change between/across replicates
+   * Correlation calculation
 * **Hit discovery** (under development)
 * **Visualization** (under development)
+
+### Items under consideration:
+1. Sequence prediction of targeted base-edit
+2. TF motif annotation
+
+   a. Occupancy of Cas9 for CRISPRi (and how this may disrupt a TF motif)
+   
+   b. Putative creation / destruction of TF motifs upon predicted base-editing outcome
