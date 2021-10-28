@@ -40,3 +40,5 @@ This format and organization of metadata surrounding a multidimensional experime
 
 * [**Normalization**](perturb_tools/_normalization/README.md)
 * [**Arithmetic**](perturb_tools/_arithmetic/README.md)
+* **Hit discovery** (under development)
+* **Visualization** (under development)
