@@ -35,3 +35,8 @@ This format and organization of metadata surrounding a multidimensional experime
 * **`screen.condit`** (pandas DataFrame) of shape: `[conditions x condition_annotation]`
 
 * **`screen.guides`** (pandas DataFrame) of shape: `[guides x guide_annotation]`
+
+## General analysis Steps
+
+* [**Normalization**](perturb_tools/_normalization/README.md)
+* [**Arithmetic**](perturb_tools/_arithmetic/README.md)
