@@ -7,3 +7,4 @@ from . import _arithmetic as arithmetic
 from . import _experimental_design as design
 from . import _external_tools as tools
 from . import _normalization as norm
+from . import _utilities as util
