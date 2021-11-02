@@ -3,4 +3,7 @@
 
 from ._framework._ScreenModule import _Screen as Screen
 
-from . import _analysis as a
+from . import _arithmetic as arithmetic
+from . import _experimental_design as design
+from . import _external_tools as tools
+from . import _normalization as norm

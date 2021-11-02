@@ -15,7 +15,9 @@ from ._supporting_functions._data_reading._read_screen_from_PoolQ import _read_s
 from ._supporting_functions._fold_change import _fold_change
 from ._supporting_functions._log_fold_change import _log_fold_change
 
-from .._analysis._read_count_norm import _log_normalize_read_count
+from .._normalization._funcs._read_count_norm import _log_normalize_read_count
+
+
 class _Screen:
     def __init__(self, X=False):
 

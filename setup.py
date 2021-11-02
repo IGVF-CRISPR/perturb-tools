@@ -16,10 +16,13 @@ setup(
     description="perturb-tools - Analysis Framework for Pooled CRISPR Genome Editing Screens.",
     packages=[
         "perturb_tools",
-        "perturb_tools._design",
-        "perturb_tools._analysis",
+        "perturb_tools._arithmetic",
+        "perturb_tools._experimental_design",
+        "perturb_tools._external_tools",
         "perturb_tools._framework",
+        "perturb_tools._normalization",
     ],
+    
     install_requires=[
         "matplotlib>=3.4",
         "anndata>=0.7.1",
