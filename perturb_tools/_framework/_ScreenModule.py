@@ -18,7 +18,7 @@ from ._supporting_functions._print_screen_object import _print_screen_object
 from .._arithmetic._funcs._log_fold_change import _log_fold_change
 from .._arithmetic._funcs._fold_change import _fold_change
 
-from .._utilities._funcs._write_screen import _write_screen
+from .._readwrite._funcs._write_screen import _write_screen
 
 class _Screen(AnnData):
     def __init__(self, X=None, *args, **kwargs):
