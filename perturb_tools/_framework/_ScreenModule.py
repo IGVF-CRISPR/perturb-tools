@@ -7,7 +7,6 @@ __email__ = ", ".join(["vinyard@g.harvard.edu", "jayoung_ryu@g.harvard.edu"])
 
 import pandas as pd
 import vintools as v
-from anndata import AnnData
 
 from ._supporting_functions._print_screen_object import _print_screen_object
 from ._supporting_functions._data_reading._read_screen_from_PoolQ import _read_screen_from_PoolQ
@@ -20,7 +19,7 @@ from .._arithmetic._funcs._fold_change import _fold_change
 
 from .._readwrite._funcs._write_screen import _write_screen
 
-class _Screen(AnnData):
+class _Screen:
     def __init__(self, X=None, *args, **kwargs):
         if X is not None:
             super().__init__(X, *args, **kwargs)

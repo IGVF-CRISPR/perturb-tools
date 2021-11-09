@@ -12,7 +12,7 @@ import os
 
 # local imports #
 # ------------- #
-from .._utilities._flexible_mkdir import _flexible_multilevel_mkdir
+from ..._utilities._funcs._flexible_mkdir import _flexible_multilevel_mkdir
 
 
 def _save_dict_of_dfs(df_dict, out_path, filename, verbose=False):
