@@ -18,14 +18,17 @@ from ._supporting_functions._log_fold_change import _log_fold_change
 from .._normalization._funcs._read_count_norm import _log_normalize_read_count
 
 
-class _Screen(AnnData):
+class _Screen:
     def __init__(self, X=None, *args, **kwargs):
         if X is not None:
-            super().__init__(X, *args, **kwargs)
-            if '_obs' in self.__dict__: self.__dict__['guides'] = self.__dict__.pop("_obs")
-            if '_var' in self.__dict__: self.__dict__['condit'] = self.__dict__.pop("_var")
-            if '_obsm' in self.__dict__: self.__dict__['condit_m'] = self.__dict__.pop("_obsm")
-            if '_obsp' in self.__dict__: self.__dict__['condit_p'] = self.__dict__.pop("_obsp")
+            ad = AnnData(X, *args, **kwargs)
+            self.X = ad.X
+            self.guides = ad.obs
+            self.condit = ad.var
+            self.condit_m = ad.obsm
+            self.condit_p = ad.obsp
+            self.layers = ad.layers
+            self.uns = ad.uns
             n_guides, n_conditions, _ = _print_screen_object(self)
             
     def __repr__(self) -> str:
