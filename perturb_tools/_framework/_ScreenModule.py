@@ -1,8 +1,8 @@
 
 # _ScreenModule.py
 __module_name__ = "_ScreenModule.py"
-__author__ = ", ".join(["Michael E. Vinyard"])
-__email__ = ", ".join(["vinyard@g.harvard.edu",])
+__author__ = ", ".join(["Michael E. Vinyard", "Jayoung Ryu"])
+__email__ = ", ".join(["vinyard@g.harvard.edu", "jayoung_ryu@g.harvard.edu"])
 
 
 import pandas as pd
@@ -18,6 +18,7 @@ from ._supporting_functions._print_screen_object import _print_screen_object
 from .._arithmetic._funcs._log_fold_change import _log_fold_change
 from .._arithmetic._funcs._fold_change import _fold_change
 
+from .._utilities._write_screen import _write_screen
 
 class _Screen(AnnData):
     def __init__(self, X=None, *args, **kwargs):
@@ -35,8 +36,8 @@ class _Screen(AnnData):
     def read_PoolQ(self, path, metadata=False, merge_metadata_on='Condition'):
 
         """ 
-	Read poolQ.
-	"""
+        Read poolQ.
+        """
 
         self._PoolQ_outpath = path
         self._PoolQScreenDict = _read_screen_from_PoolQ(self._PoolQ_outpath)
@@ -53,9 +54,9 @@ class _Screen(AnnData):
     def annotate_guides(self, genes, chrom, start, stop, annotations, DirectPairDict, ref_seq_path):
         
         """
-	Annotate sgRNA table.
+        Annotate sgRNA table.
 
-	"""
+        """
         self.guides = _annotate_sgRNAs(self.guides, genes, chrom, start, stop, annotations, DirectPairDict, ref_seq_path)
         
     def log_norm(self, layer_key='lognorm_counts'):
@@ -66,9 +67,8 @@ class _Screen(AnnData):
     def log_fold_change(self, cond1, cond2, lognorm_counts_key="lognorm_counts", name=False):
 
         """ 
-	General module to calculate LFC across experimental conditions. 
-
-	"""
+        General module to calculate LFC across experimental conditions. 
+        """
         try:
             self.guides["{}_{}.lfc".format(cond1, cond2)] = _log_fold_change(
                 self.layers[lognorm_counts_key], cond1, cond2
@@ -86,9 +86,20 @@ class _Screen(AnnData):
     def fold_change(self, cond1, cond2):
 
         """
-	# incomplete
-	"""
+        # incomplete
+        """
 
         self.guides["{}_{}.fc".format(cond1, cond2)] = _fold_change(
             self.layers[lognorm_counts_key], cond1, cond2
         )
+        
+    def write(self, out_path="CRISPR_screen"):
+        
+        """
+        
+        Write .csv files for each part of the screen. will eventually be replaced by something more native to AnnData. 
+        
+        """
+        
+        
+        _write_screen(self, out_path)
