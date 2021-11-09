@@ -10,17 +10,6 @@ from matplotlib.gridspec import GridSpec
 import matplotlib.pyplot as plt
 import matplotlib
 
-# def _return_outs_filepaths(outsdir, outfile_names):
-
-#     """"""
-
-#     outfiles = []
-
-#     for file in outfile_names:
-#         outfiles.append(os.path.join(outsdir, file))
-
-#     return outfiles
-
 
 def _make_results_dict(poolq_outs_path):
 

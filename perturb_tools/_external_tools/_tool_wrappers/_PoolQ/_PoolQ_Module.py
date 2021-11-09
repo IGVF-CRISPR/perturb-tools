@@ -15,8 +15,8 @@ from ._supporting_functions._PoolQ_supporting_functions import _plot_correlation
 from ._supporting_functions._get_guide_position_df import _get_guide_position_df
 from ._supporting_functions._logfoldchange import _plot_multiLFC
 
-from ..._utilities._funcs._flexible_mkdir import _flexible_multilevel_mkdir
-from ..._plotting._funcs._plot_correlation_heatmap import _plot_correlation_heatmap
+from ...._utilities._funcs._flexible_mkdir import _flexible_multilevel_mkdir
+from ...._plotting._funcs._plot_correlation_heatmap import _plot_correlation_heatmap
 
 poolq_path = os.path.join(__file__, "_external_software/poolq-3.3.2/poolq3.sh")
 

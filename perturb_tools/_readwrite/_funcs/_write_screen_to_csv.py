@@ -24,7 +24,7 @@ def _save_dict_of_dfs(df_dict, out_path, filename, verbose=False):
         df_dict[key].to_csv(file_outpath)
 
 
-def _write_screen(screen, out_path="CRISPR_screen"):
+def _write_screen_to_csv(screen, out_path="CRISPR_screen"):
 
     """This function will eventually be replaced with something more native / similar to AnnData."""
 

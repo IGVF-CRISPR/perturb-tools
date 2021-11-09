@@ -1,7 +1,7 @@
 
 # _ScreenModule.py
 __module_name__ = "_ScreenModule.py"
-__author__ = ", ".join(["Michael E. Vinyard", "Jayoung Ryu"])
+__author__ = ", ".join(["Michael E. Vinyard", "Jayoung Kim Ryu"])
 __email__ = ", ".join(["vinyard@g.harvard.edu", "jayoung_ryu@g.harvard.edu"])
 
 
@@ -17,7 +17,8 @@ from ._supporting_functions._print_screen_object import _print_screen_object
 from .._arithmetic._funcs._log_fold_change import _log_fold_change
 from .._arithmetic._funcs._fold_change import _fold_change
 
-from .._readwrite._funcs._write_screen import _write_screen
+from .._readwrite._funcs._write_screen_to_csv import _write_screen_to_csv
+from .._readwrite._funcs._write_screen_to_excel import _write_screen_to_excel
 
 class _Screen:
     def __init__(self, X=None, *args, **kwargs):
@@ -92,7 +93,44 @@ class _Screen:
             self.layers[lognorm_counts_key], cond1, cond2
         )
         
-    def write(self, out_path="CRISPR_screen"):
+    def to_Excel(self, workbook_path="CRISPR_screen.workbook.xlsx", index=False, silent=False):
+        
+        """
+        Write components of Screen class to an Excel workbook. 
+        
+        Parameters:
+        -----------
+        workbook_path
+            Prevent printing outpaths / details of the created workbook. 
+            default: "CRISPR_screen.workbook.xlsx"
+            type: str
+            
+        index
+            Include an index in the workbook sheet. 
+            default: False
+            type: bool
+            
+        silent
+            Prevent printing outpaths / details of the created workbook. 
+            default: False
+            type: bool
+        
+        Returns:
+        --------
+        None, writes to excel workbook.
+        
+        Notes:
+        ------
+        (1) Will likely need to be updated once we fully transition over to AnnData-like class. 
+        
+        """
+                
+        _write_screen_to_excel(self,
+                                 workbook_path,
+                                 index,
+                                 silent,)
+        
+    def to_csv(self, out_path="CRISPR_screen"):
         
         """
         
