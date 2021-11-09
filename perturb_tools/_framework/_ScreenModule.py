@@ -8,19 +8,17 @@ __email__ = ", ".join(["vinyard@g.harvard.edu",])
 import pandas as pd
 import vintools as v
 
-
-from ._supporting_functions._print_screen_object import _print_screen_object
 from ._supporting_functions._data_reading._read_screen_from_PoolQ import _read_screen_from_PoolQ
-
-from ._supporting_functions._fold_change import _fold_change
-from ._supporting_functions._log_fold_change import _log_fold_change
-
+from ._supporting_functions._guides._GuideAnnotationModule import _annotate_sgRNAs
 from .._normalization._funcs._read_count_norm import _log_normalize_read_count
+from ._supporting_functions._print_screen_object import _print_screen_object
 
+from .._arithmetic._funcs._log_fold_change import _log_fold_change
+from .._arithmetic._funcs._fold_change import _fold_change
 
 class _Screen:
     def __init__(self, X=False):
-
+        
         if X:
             self.X = X
             n_guides, n_conditions = _print_screen_object(self.X)
@@ -40,6 +38,11 @@ class _Screen:
             
         _print_screen_object(self)
         
+        
+    def annotate_guides(self, genes, chrom, start, stop, annotations, DirectPairDict, ref_seq_path):
+        
+        """ """
+        self.guides = _annotate_sgRNAs(self.guides, genes, chrom, start, stop, annotations, DirectPairDict, ref_seq_path)
         
     def log_norm(self, layer_key='lognorm_counts'):
         
