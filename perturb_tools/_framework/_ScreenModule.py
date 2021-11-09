@@ -7,13 +7,9 @@ __email__ = ", ".join(["vinyard@g.harvard.edu",])
 
 import pandas as pd
 import vintools as v
-<<<<<<< HEAD
-
-=======
 from anndata import AnnData
 
 from ._supporting_functions._print_screen_object import _print_screen_object
->>>>>>> b003b1e4c8b84861cea3f4d80ab8892c37908600
 from ._supporting_functions._data_reading._read_screen_from_PoolQ import _read_screen_from_PoolQ
 from ._supporting_functions._guides._GuideAnnotationModule import _annotate_sgRNAs
 from .._normalization._funcs._read_count_norm import _log_normalize_read_count
@@ -22,14 +18,7 @@ from ._supporting_functions._print_screen_object import _print_screen_object
 from .._arithmetic._funcs._log_fold_change import _log_fold_change
 from .._arithmetic._funcs._fold_change import _fold_change
 
-<<<<<<< HEAD
-class _Screen:
-    def __init__(self, X=False):
-        
-        if X:
-            self.X = X
-            n_guides, n_conditions = _print_screen_object(self.X)
-=======
+
 class _Screen(AnnData):
     def __init__(self, X=None, *args, **kwargs):
         if X is not None:
@@ -43,11 +32,11 @@ class _Screen(AnnData):
     def __repr__(self) -> str:
         return _print_screen_object(self)[2]
 
->>>>>>> b003b1e4c8b84861cea3f4d80ab8892c37908600
-
     def read_PoolQ(self, path, metadata=False, merge_metadata_on='Condition'):
 
-        """ """
+        """ 
+	Read poolQ.
+	"""
 
         self._PoolQ_outpath = path
         self._PoolQScreenDict = _read_screen_from_PoolQ(self._PoolQ_outpath)
@@ -63,7 +52,10 @@ class _Screen(AnnData):
         
     def annotate_guides(self, genes, chrom, start, stop, annotations, DirectPairDict, ref_seq_path):
         
-        """ """
+        """
+	Annotate sgRNA table.
+
+	"""
         self.guides = _annotate_sgRNAs(self.guides, genes, chrom, start, stop, annotations, DirectPairDict, ref_seq_path)
         
     def log_norm(self, layer_key='lognorm_counts'):
@@ -73,7 +65,10 @@ class _Screen(AnnData):
     
     def log_fold_change(self, cond1, cond2, lognorm_counts_key="lognorm_counts", name=False):
 
-        """"""
+        """ 
+	General module to calculate LFC across experimental conditions. 
+
+	"""
         try:
             self.guides["{}_{}.lfc".format(cond1, cond2)] = _log_fold_change(
                 self.layers[lognorm_counts_key], cond1, cond2
@@ -90,7 +85,9 @@ class _Screen(AnnData):
         
     def fold_change(self, cond1, cond2):
 
-        """"""
+        """
+	# incomplete
+	"""
 
         self.guides["{}_{}.fc".format(cond1, cond2)] = _fold_change(
             self.layers[lognorm_counts_key], cond1, cond2
