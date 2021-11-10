@@ -9,3 +9,4 @@ from . import _external_tools as tools
 from . import _normalization as norm
 from . import _utilities as util
 from . import _readwrite as io
+from . import _plotting as pl

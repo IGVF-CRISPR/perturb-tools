@@ -14,9 +14,6 @@ from ._supporting_functions._guides._GuideAnnotationModule import _annotate_sgRN
 from .._normalization._funcs._read_count_norm import _log_normalize_read_count
 from ._supporting_functions._print_screen_object import _print_screen_object
 
-from .._arithmetic._funcs._log_fold_change import _log_fold_change
-from .._arithmetic._funcs._fold_change import _fold_change
-
 from .._readwrite._funcs._write_screen_to_csv import _write_screen_to_csv
 from .._readwrite._funcs._write_screen_to_excel import _write_screen_to_excel
 
