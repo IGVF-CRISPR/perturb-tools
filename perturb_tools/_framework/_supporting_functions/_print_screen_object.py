@@ -29,7 +29,7 @@ def _print_screen_object(ScreenObject):
         x = list(ScreenObject.__getattribute__(attribute).keys())
         for n, i in enumerate(x):
             if n != len(x) - 1:
-                descr += "'{}, '".format(i)
+                descr += "'{}', ".format(i)
             else:
                 descr += "'{}'".format(i)
         descr += "\n"
