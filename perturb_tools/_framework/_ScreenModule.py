@@ -148,8 +148,6 @@ class _Screen:
             aggregate_condit = "replicate", 
             compare_condit = "sort",
             out_guides_suffix = "lfc",
-            aggregate_fn = "median",
-            name = None,
             keep_result = False,
             ):
         
@@ -206,7 +204,6 @@ class _Screen:
                 aggregate_condit = aggregate_condit, 
                 compare_condit = compare_condit,
                 out_guides_suffix = out_guides_suffix,
-                aggregate_fn = aggregate_fn,
                 keep_result = keep_per_replicate,
                 )
 
