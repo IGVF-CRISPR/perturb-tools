@@ -2,6 +2,7 @@
 
 
 from ._framework._ScreenModule import _Screen as Screen
+from ._framework._ScreenModule import concat
 
 from . import _arithmetic as calc
 from . import _experimental_design as design

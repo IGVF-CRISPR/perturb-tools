@@ -8,6 +8,7 @@ __email__ = ", ".join(["vinyard@g.harvard.edu", "jayoung_ryu@g.harvard.edu"])
 import pandas as pd
 import vintools as v
 import numpy as np
+from anndata import AnnData
 import anndata as ad
 import copy
 import warnings
@@ -24,18 +25,14 @@ from .._arithmetic._funcs._fold_change import _fold_change
 from .._readwrite._funcs._write_screen_to_csv import _write_screen_to_csv
 from .._readwrite._funcs._write_screen_to_excel import _write_screen_to_excel
 
-class _Screen:
-    ad = __import__('anndata')
-    def __init__(self, X=None, *args, **kwargs):
+class _Screen(AnnData):
+    def __init__(self, X=None, guides= None, condit = None, *args, **kwargs):
         if X is not None:
-            adata = ad.AnnData(X, *args, **kwargs)
-            self.X = adata.X
-            self.guides = adata.obs
-            self.condit = adata.var
-            self.condit_m = adata.obsm
-            self.condit_p = adata.obsp
-            self.layers = adata.layers
-            self.uns = adata.uns
+            super().__init__(X, obs = guides, var = condit, *args, **kwargs)
+            self.guides = self.obs
+            self.condit = self.var
+            self.condit_m = self.obsm
+            self.condit_p = self.obsp
             n_guides, n_conditions, _ = _print_screen_object(self)
             
     def __repr__(self) -> str:
@@ -44,15 +41,10 @@ class _Screen:
 
     def __add__(self, other):
         if all(self.guides.index == other.guides.index) and all(self.condit.index == other.condit.index):
-            added = self.copy()
-            for layer in self.layers:
-                added.layers[layer] += other.layers[layer]
+            added = _Screen(added.X + other.X, self.guides.copy(), self.condit.copy())
             return(added)
         else:
             raise ValueError("Guides/sample description mismatch")
-
-    def copy(self):
-        return copy.deepcopy(self)
 
 
     def read_PoolQ(self, path, metadata=False, merge_metadata_on='Condition'):
@@ -145,22 +137,22 @@ class _Screen:
             cond1, 
             cond2,
             lognorm_counts_key = "lognorm_counts",
-            aggregate_condit = "replicate", 
+            rep_condit = "replicate", 
             compare_condit = "sort",
             out_guides_suffix = "lfc",
             keep_result = False,
             ):
         
-        if aggregate_condit not in self.condit.columns:
+        if rep_condit not in self.condit.columns:
             raise ValueError("{} not in condit features".format(aggreagate_condit))
         if compare_condit not in self.condit.columns:
             raise ValueError("{} not in condit features".format(compare_condit))
 
 
         lfcs = []
-        for rep in self.condit[aggregate_condit].unique():
-            cond1_idx = np.where((self.condit[aggregate_condit] == rep) & (self.condit[compare_condit] == cond1))[0]
-            cond2_idx = np.where((self.condit[aggregate_condit] == rep) & (self.condit[compare_condit] == cond2))[0]
+        for rep in self.condit[rep_condit].unique():
+            cond1_idx = np.where((self.condit[rep_condit] == rep) & (self.condit[compare_condit] == cond1))[0]
+            cond2_idx = np.where((self.condit[rep_condit] == rep) & (self.condit[compare_condit] == cond2))[0]
 
             if len(cond1_idx) != 1 or len(cond2_idx) != 1:
                 raise ValueError("Conditions are not unique for each replicates to be aggregated.")
@@ -173,7 +165,7 @@ class _Screen:
                 ))
 
         lfcs_array = np.concatenate(lfcs, axis = 1)
-        lfcs_df_columns =  [s + ".{}_{}.{}".format(cond1, cond2, out_guides_suffix) for s in self.condit[aggregate_condit].unique()] 
+        lfcs_df_columns =  [s + ".{}_{}.{}".format(cond1, cond2, out_guides_suffix) for s in self.condit[rep_condit].unique()] 
         lfcs_df = pd.DataFrame(lfcs_array, 
                 index = self.guides.index,
                 columns = lfcs_df_columns )
@@ -201,7 +193,7 @@ class _Screen:
                 cond1, 
                 cond2,
                 lognorm_counts_key = lognorm_counts_key,
-                aggregate_condit = aggregate_condit, 
+                rep_condit = aggregate_condit, 
                 compare_condit = compare_condit,
                 out_guides_suffix = out_guides_suffix,
                 keep_result = keep_per_replicate,
@@ -284,3 +276,8 @@ class _Screen:
         
         
         _write_screen(self, out_path)
+
+def concat(screens, *args, **kwargs):
+    adata = ad.concat(screens, *args, **kwargs)
+    
+    return(_Screen(adata))
