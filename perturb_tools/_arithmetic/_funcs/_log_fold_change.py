@@ -1,5 +1,5 @@
-
-def _log_fold_change(df, cond1, cond2):
+import numpy as np
+def _log_fold_change(mat: np.array, cond1, cond2):
 
     """Log fold-change calculation. Assumes log-transformed values as input."""
-    return df[cond2] - df[cond1]
+    return mat[:, cond2] - mat[:, cond1]
