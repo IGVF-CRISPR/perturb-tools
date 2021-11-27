@@ -1,5 +1,6 @@
 
 import vintools as v
+import numpy as np
 import matplotlib.pyplot as plt
 
 def _cds_plot_construction():
@@ -12,7 +13,7 @@ def _cds_plot_construction():
     spines = v.pl.ax_spines(ax)
     spines.delete(["left"])
 
-    return ax
+    return plot, ax
 
 
 def _plot_cds(df, title, exon_spacing=100):
@@ -22,12 +23,12 @@ def _plot_cds(df, title, exon_spacing=100):
     c = v.pl.share_seq()["colors"]
     c = np.repeat(c, 3).values
 
-    ax = _cds_plot_construction()
+    plot, ax = _cds_plot_construction()
 
     floating_start = 0
     exon_centers = []
     for i in range(len(df)):
-        stop = floating_start + df.length.iloc[i]
+        stop = floating_start + df["exon_length"].iloc[i]
         exon_centers.append(np.mean([stop, floating_start]))
         ax.hlines(0.1, floating_start, stop, color=c[i], linewidth=10)
         floating_start = stop + exon_spacing

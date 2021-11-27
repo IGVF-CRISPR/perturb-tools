@@ -59,7 +59,7 @@ def _determine_overlap_5prime(
     return (fragment2_start < fragment1_start) and (fragment2_stop > fragment1_start)
 
 
-def _determine_partial_overlapping_fragments(df, silent):
+def _determine_partial_overlapping_fragments(df, silent, start_key="Start", end_key="End"):
 
     """
 
@@ -81,10 +81,10 @@ def _determine_partial_overlapping_fragments(df, silent):
         for fragment2 in range(len(df)):
 
             if _determine_overlap_3prime(
-                df.start.iloc[fragment1],
-                df.stop.iloc[fragment1],
-                df.start.iloc[fragment2],
-                df.stop.iloc[fragment2],
+                df[start_key].iloc[fragment1],
+                df[end_key].iloc[fragment1],
+                df[start_key].iloc[fragment2],
+                df[end_key].iloc[fragment2],
             ):
                 OverlapDict["5'"].append([fragment1, fragment2])
                 if not silent:
@@ -95,10 +95,10 @@ def _determine_partial_overlapping_fragments(df, silent):
                     )
 
             if _determine_overlap_5prime(
-                df.start.iloc[fragment1],
-                df.stop.iloc[fragment1],
-                df.start.iloc[fragment2],
-                df.stop.iloc[fragment2],
+                df[start_key].iloc[fragment1],
+                df[end_key].iloc[fragment1],
+                df[start_key].iloc[fragment2],
+                df[end_key].iloc[fragment2],
             ):
                 OverlapDict["3'"].append([fragment1, fragment2])
                 if not silent:
@@ -116,7 +116,7 @@ def _determine_total_overlap(
     return (fragment1_start < fragment2_start) and (fragment1_stop > fragment2_stop)
 
 
-def _determine_total_overlapping_fragments(df, silent=False):
+def _determine_total_overlapping_fragments(df, silent=False, start_key="Start", end_key="End"):
 
     overlapped_fragments = []
 
@@ -124,19 +124,19 @@ def _determine_total_overlapping_fragments(df, silent=False):
         for fragment2 in range(len(df)):
 
             if _determine_total_overlap(
-                df.start.iloc[fragment1],
-                df.stop.iloc[fragment1],
-                df.start.iloc[fragment2],
-                df.stop.iloc[fragment2],
+                df[start_key].iloc[fragment1],
+                df[end_key].iloc[fragment1],
+                df[start_key].iloc[fragment2],
+                df[end_key].iloc[fragment2],
             ):
                 overlapped_fragments.append(fragment1)
                 if not silent:
                     print("fragment {} engulfs {}".format(fragment1, fragment2))
             elif _determine_total_overlap(
-                df.start.iloc[fragment2],
-                df.stop.iloc[fragment2],
-                df.start.iloc[fragment1],
-                df.stop.iloc[fragment1],
+                df[start_key].iloc[fragment2],
+                df[end_key].iloc[fragment2],
+                df[start_key].iloc[fragment1],
+                df[end_key].iloc[fragment1],
             ):
                 overlapped_fragments.append(fragment2)
                 if not silent:
@@ -145,32 +145,32 @@ def _determine_total_overlapping_fragments(df, silent=False):
     return np.unique(overlapped_fragments)
 
 
-def _drop_totally_overlapped_fragments(df, overlapped_fragments_list):
+def _drop_totally_overlapped_fragments(df, overlapped_fragments_list, start_key="Start", end_key="End"):
 
     """"""
 
     print("\nDropping the following exonic regions due to overlap:\n")
     for i in overlapped_fragments_list:
-        print("\t{}-{}".format(df.start.iloc[i], df.stop.iloc[i]))
+        print("\t{}-{}".format(df[start_key].iloc[i], df[end_key].iloc[i]))
 
     df_ = df.drop(overlapped_fragments_list)
 
     return df_.reset_index(drop=True)
 
 
-def _identify_unique_fragments(df):
+def _identify_unique_fragments(df, start_key="Start", end_key="End"):
 
     df = df.reset_index(drop=True)
     df_ = (
-        df.sort_values("start")
+        df.sort_values(start_key)
         .reset_index(drop=True)
-        .drop_duplicates(subset="stop", keep="first")
+        .drop_duplicates(subset=end_key, keep="first")
     )
 
     _df_ = (
-        df_.sort_values("stop")
+        df_.sort_values(end_key)
         .reset_index(drop=True)
-        .drop_duplicates(subset="start", keep="first")
+        .drop_duplicates(subset=start_key, keep="first")
     )
 
     return _df_.reset_index(drop=True)
