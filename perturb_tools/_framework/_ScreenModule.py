@@ -6,23 +6,19 @@ __email__ = ", ".join(["vinyard@g.harvard.edu", "jayoung_ryu@g.harvard.edu"])
 
 
 import pandas as pd
-<<<<<<< HEAD
-=======
-import vintools as v
 import numpy as np
 import anndata as ad
 import copy
 import warnings
->>>>>>> a5b283f56eda0dcd3bf25ea1b3babde06b2be4a6
 
 from ._supporting_functions._print_screen_object import _print_screen_object
-from ._supporting_functions._data_reading._read_screen_from_PoolQ import _read_screen_from_PoolQ
 from ._supporting_functions._guides._GuideAnnotationModule import _annotate_sgRNAs
 from .._normalization._funcs._read_count_norm import _log_normalize_read_count
 from ._supporting_functions._print_screen_object import _print_screen_object
 
 from .._readwrite._funcs._write_screen_to_csv import _write_screen_to_csv
 from .._readwrite._funcs._write_screen_to_excel import _write_screen_to_excel
+from .._readwrite._funcs._read_screen_from_PoolQ import _read_screen_from_PoolQ
 
 from .._utilities._funcs._update_dict import _update_dict
 
@@ -62,11 +58,11 @@ class _Screen:
         """ 
         Read poolQ.
         """
-
+        
         self._PoolQ_outpath = path
         self._PoolQScreenDict = _read_screen_from_PoolQ(self._PoolQ_outpath)
         
-        for key, value in v.ut.update_dict(self._PoolQScreenDict).items():
+        for key, value in _update_dict(self._PoolQScreenDict).items():
             self.__setattr__(key, value)
         
         if metadata:

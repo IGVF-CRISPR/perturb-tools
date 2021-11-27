@@ -2,8 +2,8 @@
 import os, glob
 import numpy as np
 
-from ...._utilities._funcs._python_string_formatting import _format_string_printing_font
-from ...._utilities._funcs._print_underline import _print_underline
+from ....._utilities._funcs._python_string_formatting import _format_string_printing_font
+from ....._utilities._funcs._print_underline import _print_underline
 
 def _get_read_files(data_dir, bc):
 
@@ -29,8 +29,6 @@ def _get_read_files(data_dir, bc):
 
     """
     
-    print("Datadir:", data_dir)
-
     fastq_matches = np.array(glob.glob(os.path.join(data_dir, "*.fastq.gz")))
     out = np.array([i for i, v in enumerate(fastq_matches) if bc in v])
 
