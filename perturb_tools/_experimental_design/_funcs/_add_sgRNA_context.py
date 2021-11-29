@@ -1,5 +1,7 @@
 ### get context info for sgRNA
 
+import pandas as pd
+
 def _get_reverse_sgRNA_context(seq, df, flank_N):
 
     """"""
@@ -57,9 +59,9 @@ def _add_sgRNA_context(df, chrom_seq, flank_N=10):
 
     dfs = []
 
-    for i, chrom in enumerate(df.chr.unique()):
+    for i, chrom in enumerate(df["Chromosome"].unique()):
 
-        chrom_df = df.loc[df.chr == chrom]
+        chrom_df = df.loc[df["Chromosome"] == chrom]
 
         forw_context_added_df = _get_forward_sgRNA_context(
             chrom_seq[i], chrom_df, flank_N

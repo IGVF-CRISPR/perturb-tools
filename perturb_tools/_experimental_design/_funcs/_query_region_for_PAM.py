@@ -1,4 +1,10 @@
+
+from ..._utilities._funcs._SequenceManipulation import _SequenceManipulation
 from Bio import SeqIO
+import pandas as pd
+import numpy as np
+import regex
+
 
 def _get_seq_one_chr(ref_seq_path, query_chr):
 
@@ -22,7 +28,6 @@ def _get_seq_one_chr(ref_seq_path, query_chr):
 
         if record.description.split()[0] == query_chr:
             chromosome_reference_seq = str(record.seq)
-            print("Query chromosome isolated...")
 
             return chromosome_reference_seq, len(chromosome_reference_seq)
 
@@ -80,8 +85,10 @@ def _find_pam_loci_whole_chromosome(ref_seq_path, query_chr, PAM="NGG"):
             r"%s" % (pam), reference_chromosome_sequence, overlapped=True
         )
     ]
-
-    reverse_complement_seq = _get_reverse_complement(reference_chromosome_sequence)
+    
+    ref_seq = _SequenceManipulation(reference_chromosome_sequence)
+    reverse_complement_seq = ref_seq.reverse_complement()
+    
     reverse_complement_seq_pam_match_coords = [
         m.span()[0]
         for m in regex.finditer(r"%s" % (pam), reverse_complement_seq, overlapped=True)
@@ -94,13 +101,13 @@ def _find_pam_loci_whole_chromosome(ref_seq_path, query_chr, PAM="NGG"):
 
     print(
         str(len(forward_seq_pam_match_coords)),
-        "PAM matches identified along the forward strand of query chromsome.",
+        "\nPAM matches identified along the forward strand of query chromsome.\n",
     )
     print(
         str(len(reverse_complement_seq_pam_match_coords)),
-        "PAM matches identified along the reverse strand of query chromsome.",
+        "\nPAM matches identified along the reverse strand of query chromsome.\n",
     )
-
+    
     reverse_complement_seq_pam_match_coords_adjusted = (
         _adjust_reverse_strand_coords_to_forward(
             reverse_complement_seq_pam_match_coords, chromosome_length
@@ -109,7 +116,7 @@ def _find_pam_loci_whole_chromosome(ref_seq_path, query_chr, PAM="NGG"):
 
     return (
         forward_seq_pam_match_coords,
-        _reverse_complement_seq_pam_match_coords_adjusted,
+        reverse_complement_seq_pam_match_coords_adjusted,
         reference_chromosome_sequence
     )
 

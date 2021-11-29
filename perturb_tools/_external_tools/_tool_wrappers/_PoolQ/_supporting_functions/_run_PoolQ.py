@@ -2,8 +2,6 @@
 import os, glob
 import numpy as np
 
-from ....._utilities._funcs._python_string_formatting import _format_string_printing_font
-from ....._utilities._funcs._print_underline import _print_underline
 
 def _get_read_files(data_dir, bc):
 

@@ -1,5 +1,6 @@
 
 import numpy as np
+import pandas as pd
 from ..._arithmetic._funcs._SequenceManipulation import _SequenceManipulation
 
 def _add_protospacer_sequence(df, chromosome_seq, strand):
@@ -13,7 +14,7 @@ def _add_protospacer_sequence(df, chromosome_seq, strand):
 
     if strand == "+":
 
-        for i in df.PAM_loci:
+        for i in df['PAM_loci']:
             pam_seqs = np.append(pam_seqs, chromosome_seq[i : i + 3])
         for i in df.index:
             guide_seqs = np.append(
@@ -22,7 +23,7 @@ def _add_protospacer_sequence(df, chromosome_seq, strand):
 
     elif strand == "-":
 
-        for i in df.PAM_loci:            
+        for i in df['PAM_loci']:            
             pam_seq = _SequenceManipulation(chromosome_seq[i - 3 : i])
             pam_seqs = np.append(pam_seqs, pam_seq.reverse_complement())
                 

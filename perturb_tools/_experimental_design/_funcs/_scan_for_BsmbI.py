@@ -4,7 +4,7 @@ from ..._utilities._funcs._scan_sequence_for_motif import _scan_sequence_for_mot
 
 import numpy as np
 
-def _scan_for_BsmbI(df):
+def _scan_for_BsmbI(df, filter_BsmbI=True):
 
     """"""
 
@@ -31,7 +31,6 @@ def _scan_for_BsmbI(df):
         x = np.array([a, b, c, d])
 
         if np.any(x) == True:
-            #             print(np.where(x != False))
             count += 1
             BsmbI_flag.append(True)
         else:
@@ -39,5 +38,11 @@ def _scan_for_BsmbI(df):
     print(count, "sgRNAs were found to contain BsmbI sites and were flagged.")
 
     df["BsmbI_flag"] = BsmbI_flag
+    
+    if filter_BsmbI:
+        print("\nFiltering BsmbI-containing sgRNAs...\n")
+        BsmbI_guide_df = df.loc[df.BsmbI_flag == True]
+        df = df.loc[df.BsmbI_flag == False]
+        return df, BsmbI_guide_df
 
-    return df
+    return df, None
