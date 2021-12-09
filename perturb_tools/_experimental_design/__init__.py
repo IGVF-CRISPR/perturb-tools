@@ -11,3 +11,5 @@ from ._funcs._plot_CDS import _plot_cds as plot_CDS
 from ._funcs._GTF_Module import _GTF as GTF
 
 from ._funcs._TargetModule import _ScreeningTarget as Target
+
+from ._funcs._scan_for_BsmbI import _scan_for_BsmbI
