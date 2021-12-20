@@ -33,6 +33,5 @@ def _get_chromosome_sequence(ref_seq_path, query_chr):
 
         if record.description.split()[0] == query_chr:
             chromosome_reference_seq = str(record.seq)
-            print("Query chromosome isolated...")
 
             return chromosome_reference_seq

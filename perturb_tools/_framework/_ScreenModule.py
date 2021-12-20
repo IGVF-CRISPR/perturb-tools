@@ -6,7 +6,6 @@ __email__ = ", ".join(["vinyard@g.harvard.edu", "jayoung_ryu@g.harvard.edu"])
 
 
 import pandas as pd
-import vintools as v
 import numpy as np
 from anndata import AnnData
 import anndata as ad
@@ -14,16 +13,15 @@ import copy
 import warnings
 
 from ._supporting_functions._print_screen_object import _print_screen_object
-from ._supporting_functions._data_reading._read_screen_from_PoolQ import _read_screen_from_PoolQ
 from ._supporting_functions._guides._GuideAnnotationModule import _annotate_sgRNAs
 from .._normalization._funcs._read_count_norm import _log_normalize_read_count
 from ._supporting_functions._print_screen_object import _print_screen_object
 
-from .._arithmetic._funcs._log_fold_change import _log_fold_change
-from .._arithmetic._funcs._fold_change import _fold_change
-
 from .._readwrite._funcs._write_screen_to_csv import _write_screen_to_csv
 from .._readwrite._funcs._write_screen_to_excel import _write_screen_to_excel
+from .._readwrite._funcs._read_screen_from_PoolQ import _read_screen_from_PoolQ
+
+from .._utilities._funcs._update_dict import _update_dict
 
 class _Screen(AnnData):
     def __init__(self, X=None, guides= None, condit = None, *args, **kwargs):
@@ -52,11 +50,11 @@ class _Screen(AnnData):
         """ 
         Read poolQ.
         """
-
+        
         self._PoolQ_outpath = path
         self._PoolQScreenDict = _read_screen_from_PoolQ(self._PoolQ_outpath)
         
-        for key, value in v.ut.update_dict(self._PoolQScreenDict).items():
+        for key, value in _update_dict(self._PoolQScreenDict).items():
             self.__setattr__(key, value)
         
         if metadata:
