@@ -7,12 +7,12 @@ __email__ = ", ".join(["vinyard@g.harvard.edu",])
 
 # package imports #
 # --------------- #
+import licorice
 import os
 
 
 # local imports #
 # ------------- #
-from ._python_string_formatting import _format_string_printing_font
 
 
 def _flexible_mkdir(path, verbose):
@@ -24,7 +24,7 @@ def _flexible_mkdir(path, verbose):
     else:
         os.mkdir(path)
         if verbose:
-            msg = _format_string_printing_font("Directory created", ["BOLD", "CYAN"])
+            msg = licorice.font_format("Directory created", ["BOLD", "CYAN"])
             print("{}: {}".format(msg, path))
 
 

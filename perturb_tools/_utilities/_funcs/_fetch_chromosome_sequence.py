@@ -2,7 +2,7 @@
 
 from Bio import SeqIO
 
-def _fetch_chromosome_sequence(ref_seq_path, query_chr, silent=False):
+def _fetch_chromosome_sequence(ref_seq_path, query_chr):
     
     """
     Isolate a specific chromosomal sequence (forward annotation) from a reference genome. 
@@ -22,7 +22,4 @@ def _fetch_chromosome_sequence(ref_seq_path, query_chr, silent=False):
     
     for record in SeqIO.parse(ref_seq_path, "fasta"):
         if record.description.split()[0] == query_chr:
-            if not silent:
-                print("Chromosome {} isolated. Length: {} nt".format(query_chr.strip('chr'), len(record.seq)))
-            
             return str(record.seq)

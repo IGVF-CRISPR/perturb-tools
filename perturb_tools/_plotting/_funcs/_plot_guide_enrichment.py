@@ -1,4 +1,4 @@
-import plotly.express as px
+# import plotly.express as px
 from tqdm import tqdm_notebook as tqdm
 
 from ..._utilities._funcs._get_gene_exons import _get_gene_exons
