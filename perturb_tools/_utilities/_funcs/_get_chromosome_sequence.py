@@ -3,7 +3,7 @@
 from Bio import SeqIO
 
 
-def _get_chromosome_sequence(ref_seq_path, query_chr, return_length=False, silent=False):
+def _get_chromosome_sequence(ref_seq_path, query_chr, return_length=False):
 
     """
     Get a specific chromosome sequence from a reference genome. Also report the length of that sequence.
@@ -37,11 +37,9 @@ def _get_chromosome_sequence(ref_seq_path, query_chr, return_length=False, silen
 
         if record.description.split()[0] == query_chr:
             chromosome_reference_seq = str(record.seq)
-	    if not silent:
-	            print("Query chromosome isolated...")
 
-            if return_length:
-                return [chromosome_reference_seq, len(chromosome_reference_seq)]
-            else:
-                return chromosome_reference_seq
+        if return_length:
+            return [chromosome_reference_seq, len(chromosome_reference_seq)]
+        else:
+            return chromosome_reference_seq
 
