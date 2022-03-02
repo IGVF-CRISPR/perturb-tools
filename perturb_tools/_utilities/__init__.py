@@ -5,4 +5,4 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu",])
 
 
-from ._funcs._get_gene_exons import _get_gene_df_from_gtf as get_gene
+#from ._funcs._get_gene_exons import _get_gene_df_from_gtf as get_gene

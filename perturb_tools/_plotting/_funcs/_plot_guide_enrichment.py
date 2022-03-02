@@ -1,7 +1,7 @@
 # import plotly.express as px
 from tqdm import tqdm_notebook as tqdm
 
-from ..._utilities._funcs._get_gene_exons import _get_gene_exons
+#from ..._utilities._funcs._get_gene_exons import _get_gene_exons
 
 from ._plot_gene_exon import _plot_gene_exon
 

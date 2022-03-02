@@ -5,7 +5,7 @@ from ._calculate_log_fold_change import _calculate_enrichment_pvalues
 from ._calculate_log_fold_change import _calculate_baseline_subtraction
 from ._calculate_log_fold_change import _calculate_delta_logfoldchange
 
-from ...._plotting._funcs._plot_guide_enrichment import _plot_guide_enrichment
+#from ...._plotting._funcs._plot_guide_enrichment import _plot_guide_enrichment
 
 class LogFoldChangeModule:
     def __init__(self, counts_df):

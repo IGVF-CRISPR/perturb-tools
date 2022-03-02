@@ -16,6 +16,7 @@ from ._supporting_functions._print_screen_object import _print_screen_object
 from ._supporting_functions._guides._GuideAnnotationModule import _annotate_sgRNAs
 from .._normalization._funcs._read_count_norm import _log_normalize_read_count
 from ._supporting_functions._print_screen_object import _print_screen_object
+from .._arithmetic._funcs._log_fold_change import _log_fold_change
 
 from .._readwrite._funcs._write_screen_to_csv import _write_screen_to_csv
 from .._readwrite._funcs._write_screen_to_excel import _write_screen_to_excel
@@ -274,6 +275,39 @@ class _Screen(AnnData):
         
         
         _write_screen(self, out_path)
+
+    def to_mageck_input(self, out_path = None, count_layer = None,
+        sgrna_column = 'name',
+        target_column = 'target_id',):
+        if count_layer is None:
+            count_matrix = self.X
+        else:
+            try:
+                count_matrix = self.layers[count_layer]
+            except KeyError:
+                raise KeyError("Layer {} doesn't exist in Screen object with layers {}".format(
+                    count_layer, self.layers.keys()
+                ))
+        mageck_input_df = pd.DataFrame(count_matrix,
+            columns = self.condit.index,
+            index = self.guides.index).fillna(0).astype(int)
+        mageck_input_df.insert(0, 'sgRNA', self.guides[sgrna_column])
+        mageck_input_df.insert(1, 'gene', self.guides[target_column])
+        if out_path is None:
+            return(mageck_input_df)
+        else:
+            mageck_input_df.to_csv(out_path, sep = "\t", index = False)
+        
+
+    def write(self, out_path):
+        """
+        Write .h5ad
+        """
+        self.obs = self.guides
+        self.var = self.condit
+        super().write(out_path)
+
+
 
 def concat(screens, *args, **kwargs):
     adata = ad.concat(screens, *args, **kwargs)

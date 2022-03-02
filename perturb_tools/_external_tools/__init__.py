@@ -7,4 +7,4 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu",])
 
 
-from pool_sharq import poolq
+#from pool_sharq import poolq
