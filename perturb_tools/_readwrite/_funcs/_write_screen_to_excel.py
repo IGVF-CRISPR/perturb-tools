@@ -25,11 +25,18 @@ def _collect_screen_dfs(screen):
 
     """collect all main elements of a screen as a pandas DataFrame."""
 
-    df_list = [screen.guides, screen.condit]
-    sheet_names = ['guides', 'condit']
+    df_list = [pd.DataFrame(screen.X, index = screen.guides.index, columns = screen.condit.index)]
+    sheet_names = ["X"]
+    for key, mat in screen.layers.items():
+        df_list.append(pd.DataFrame(mat, index = screen.guides.index, columns = screen.condit.index))
+        sheet_names.append(key)
 
-    for i in [screen.condit_m, screen.condit_p, screen.layers]:
-        df_list, sheet_names = _append_dfs_and_name_from_dict(screen.condit_m, df_list, sheet_names)
+    df_list.extend([screen.guides, screen.condit])
+    sheet_names.extend(['guides', 'condit'])
+
+    for i in [screen.condit_m, screen.condit_p]:
+        df_list, sheet_names = _append_dfs_and_name_from_dict(i, df_list, sheet_names)
+
     
     for key in screen.uns.keys():
         df_list.append(pd.DataFrame(screen.uns[key]))
@@ -39,7 +46,7 @@ def _collect_screen_dfs(screen):
 
 
 def _write_screen_to_excel(
-    screen, workbook_path="./CRISPR_screen.xlsx", index=False, silent=False
+    screen, workbook_path="./CRISPR_screen.xlsx", index=True, silent=False
 ):
     
     """
