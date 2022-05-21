@@ -143,7 +143,7 @@ class _Screen(AnnData):
             ):
         
         if rep_condit not in self.condit.columns:
-            raise ValueError("{} not in condit features".format(aggreagate_condit))
+            raise ValueError("{} not in condit features".format(rep_condit))
         if compare_condit not in self.condit.columns:
             raise ValueError("{} not in condit features".format(compare_condit))
 
@@ -296,7 +296,7 @@ class _Screen(AnnData):
         if out_path is None:
             return(mageck_input_df)
         else:
-            mageck_input_df.to_csv(out_path, sep = "\t", index = False)
+            mageck_input_df.to_csv(out_path, sep="\t", index = False)
         
 
     def write(self, out_path):
