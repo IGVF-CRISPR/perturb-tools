@@ -53,7 +53,7 @@ class _Screen(AnnData):
 
     def __add__(self, other):
         if all(self.guides.index == other.guides.index) and all(self.condit.index == other.condit.index):
-            added = _Screen(added.X + other.X, self.guides.copy(), self.condit.copy())
+            added = _Screen(self.X + other.X, self.guides.copy(), self.condit.copy())
             return(added)
         else:
             raise ValueError("Guides/sample description mismatch")
