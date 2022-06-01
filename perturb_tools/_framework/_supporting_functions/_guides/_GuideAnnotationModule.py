@@ -2,10 +2,8 @@
 import pandas as pd
 
 from ._supporting_functions._annotate_protospacer import _annotate_protospacer
-from ._supporting_functions._create_gene_dict import _create_gene_dict
 from ._supporting_functions._add_guide_target_metadata import _add_guide_target_metadata
 from ._supporting_functions._add_context_sequence_to_gene_dict import _add_context_sequence_to_gene_dict
-from ._supporting_functions._annotate_guide_position import _annotate_guide_position
 
 class _GuideAnnotation:
     def __init__(self, guide_df, genes, chromosome, start, stop):
@@ -16,7 +14,7 @@ class _GuideAnnotation:
         self.chr = chromosome
         self.start = start
         self.stop = stop
-        self.GeneDict = _create_gene_dict(genes, chromosome, start, stop)
+        #self.GeneDict = _create_gene_dict(genes, chromosome, start, stop)
         self.gene_df = pd.DataFrame.from_dict(self.GeneDict).T
 
     def add_target_metadata(self, regex_annotations=None, DirectPairDict=False):
@@ -43,8 +41,8 @@ class _GuideAnnotation:
     def annotate_position(self):
 
         """ """
-
-        self.guide_df = _annotate_guide_position(self.GeneDict, self.guide_df)
+        pass
+        #self.guide_df = _annotate_guide_position(self.GeneDict, self.guide_df)
         
         
         
