@@ -39,6 +39,9 @@ This format and organization of metadata surrounding a multidimensional experime
 
 * **`screen.guides`** (pandas DataFrame) of shape: `[guides x guide_annotation]`
 
+See [API tutorial](perturb_tools/_framework/README.md) for more information.
+
+
 ## Installation
 **Install with `pip`**:
 ```BASH
