@@ -8,5 +8,5 @@
 * Data export into analysis methods' input format
 
 ## Data Structures for CRISPR screen data
-* [AnnData](anndata_tutorial.ipynb)
-* [Screen](screen_tutorial.ipynb)
+* [AnnData](anndata_demo.ipynb)
+* [Screen](screen_demo.ipynb)
