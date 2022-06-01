@@ -62,21 +62,6 @@ class _Screen(AnnData):
         ''' TODO: currently the condit names are in ['index'] column. Making it to be the idnex will 
         allow the subsetting by condition names.
         '''
-        oidx, vidx = self._normalize_indices(index)
-        if isinstance(oidx, (int, np.integer)):
-            if not (-self.n_obs <= oidx < self.n_obs):
-                raise IndexError(f"Observation index `{oidx}` is out of range.")
-            oidx += self.n_obs * (oidx < 0)
-            oidx = slice(oidx, oidx + 1, 1)
-        if isinstance(vidx, (int, np.integer)):
-            if not (-self.n_vars <= vidx < self.n_vars):
-                raise IndexError(f"Variable index `{vidx}` is out of range.")
-            vidx += self.n_vars * (vidx < 0)
-            vidx = slice(vidx, vidx + 1, 1)
-        
-        guides_include = self.guides.iloc[oidx]["name"]
-        condit_include = self.condit.iloc[vidx]['index'].tolist()
-        print(condit_include)
         adata = super().__getitem__(index)
         return(type(self).from_adata(adata))
 
