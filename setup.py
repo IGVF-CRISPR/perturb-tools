@@ -10,7 +10,7 @@ setup(
     python_requires=">3.7.0",
     author="Michael E. Vinyard - Harvard University - Massachussetts General Hospital - Broad Institute of MIT and Harvard",
     author_email="mvinyard@broadinstitute.org",
-    url="https://github.com/mvinyard/perturb-tools",
+    url="https://github.com/pinellolab/perturb-tools",
     long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
     description="perturb-tools - Analysis Framework for Pooled CRISPR Genome Editing Screens.",
