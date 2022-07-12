@@ -1,6 +1,6 @@
 
 import pandas as pd
-import vintools as v
+#import vintools as v
 import re, numpy as np
 
 def _transform_guide_spanning_dict_to_guide_df_addition(GuidesSpanning, guide_df):
