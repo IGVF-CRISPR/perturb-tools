@@ -34,6 +34,7 @@ setup(
         "biopython>=1.79",
         "pool-sharq>=0.0.12",
 	"plotly",
+    "regex"
     ],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
