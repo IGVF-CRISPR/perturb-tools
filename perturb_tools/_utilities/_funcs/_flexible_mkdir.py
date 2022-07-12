@@ -7,7 +7,7 @@ __email__ = ", ".join(["vinyard@g.harvard.edu",])
 
 # package imports #
 # --------------- #
-import licorice
+#import licorice
 import os
 
 
@@ -23,9 +23,9 @@ def _flexible_mkdir(path, verbose):
         pass
     else:
         os.mkdir(path)
-        if verbose:
-            msg = licorice.font_format("Directory created", ["BOLD", "CYAN"])
-            print("{}: {}".format(msg, path))
+        # if verbose:
+        #     msg = licorice.font_format("Directory created", ["BOLD", "CYAN"])
+        #     print("{}: {}".format(msg, path))
 
 
 def _flexible_multilevel_mkdir(path, verbose=True):

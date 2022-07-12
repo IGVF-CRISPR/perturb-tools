@@ -33,6 +33,19 @@ class _Screen(AnnData):
             self.condit_m = self.obsm
             self.condit_p = self.obsp
             n_guides, n_conditions, _ = _print_screen_object(self)
+
+    @classmethod
+    def from_adata(cls, adata):
+        repscreen = cls(
+            (adata.X),
+            guides=(adata.obs),
+            condit=(adata.var),
+            obsm = adata.obsm,
+            obsp = adata.obsp,
+            uns=(adata.uns),
+            layers=(adata.layers)
+        )
+        return repscreen
             
     def __repr__(self) -> str:
         return _print_screen_object(self)[2]
@@ -40,10 +53,17 @@ class _Screen(AnnData):
 
     def __add__(self, other):
         if all(self.guides.index == other.guides.index) and all(self.condit.index == other.condit.index):
-            added = _Screen(added.X + other.X, self.guides.copy(), self.condit.copy())
+            added = _Screen(self.X + other.X, self.guides.copy(), self.condit.copy())
             return(added)
         else:
             raise ValueError("Guides/sample description mismatch")
+
+    def __getitem__(self, index):
+        ''' TODO: currently the condit names are in ['index'] column. Making it to be the idnex will 
+        allow the subsetting by condition names.
+        '''
+        adata = super().__getitem__(index)
+        return(type(self).from_adata(adata))
 
 
     def read_PoolQ(self, path, metadata=False, merge_metadata_on='Condition'):
@@ -218,13 +238,13 @@ class _Screen(AnnData):
 
 
 
-    def fold_change(self, cond1, cond2):
+    def fold_change(self, cond1, cond2, lognorm_counts_key="lognorm_counts"):
 
         """
         # incomplete
         """
 
-        self.guides["{}_{}.fc".format(cond1, cond2)] = _fold_change(
+        self.guides["{}_{}.fc".format(cond1, cond2)] = _log_fold_change(
             self.layers[lognorm_counts_key], cond1, cond2
         )
         
@@ -274,7 +294,7 @@ class _Screen(AnnData):
         """
         
         
-        _write_screen(self, out_path)
+        _write_screen_to_csv(self, out_path)
 
     def to_mageck_input(self, out_path = None, count_layer = None,
         sgrna_column = 'name',
@@ -308,6 +328,9 @@ class _Screen(AnnData):
         super().write(out_path)
 
 
+def read_h5ad(filename):
+    adata = ad.read_h5ad(filename)
+    return _Screen.from_adata(adata)
 
 def concat(screens, *args, **kwargs):
     adata = ad.concat(screens, *args, **kwargs)

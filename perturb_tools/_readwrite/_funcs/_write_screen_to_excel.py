@@ -14,7 +14,7 @@ from ._check_fix_file_extension import _check_fix_file_extension
 
 def _append_dfs_and_name_from_dict(df_dict, df_list, sheet_names):
     
-    subclass = f"{df_dict=}".split("=")[0]
+    subclass = "df_dict={}".format(df_dict).split("=")[0]
     
     for key in df_dict.keys():
         df_list.append(df_dict[key])

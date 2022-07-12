@@ -39,23 +39,22 @@ This format and organization of metadata surrounding a multidimensional experime
 
 * **`screen.guides`** (pandas DataFrame) of shape: `[guides x guide_annotation]`
 
+See [API tutorial](perturb_tools/_framework/README.md) for more information.
+
+
 ## Installation
-**Install with `pip`**:
-```BASH
-pip install perturb_tools
-```
 
 **Install the development package**:
 ```BASH
 # (1) clone this repository
-git clone https://github.com/mvinyard/perturb-tools.git
+git clone https://github.com/pinellolab/perturb-tools.git
 
 # (2) install the local project in editable mode
 cd ./perturb-tools; pip install -e .
 ```
 
 ## General analysis Steps
-
+* [**API tutorial**](perturb_tools/_framework/README.md)
 * [**Normalization**](perturb_tools/_normalization/README.md)
 * [**Arithmetic**](perturb_tools/_arithmetic/README.md)
    * Calculating the mean, standard deviation, and log-fold change between/across replicates
