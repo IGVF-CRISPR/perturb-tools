@@ -33,11 +33,7 @@ setup(
         "pandas>=1.1.2",
         "biopython>=1.79",
         "pool-sharq>=0.0.12",
-<<<<<<< HEAD
-	    "licorice"
-=======
 	"plotly",
->>>>>>> 6e5d009c7fe4564cbce9af1637706c86aaea65ec
     ],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
