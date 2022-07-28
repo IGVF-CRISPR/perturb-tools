@@ -248,7 +248,7 @@ class _Screen(AnnData):
             self.layers[lognorm_counts_key], cond1, cond2
         )
         
-    def to_Excel(self, workbook_path="CRISPR_screen.workbook.xlsx", index=False, silent=False):
+    def to_Excel(self, workbook_path="CRISPR_screen.workbook.xlsx", index=False, silent=False, include_uns=False):
         
         """
         Write components of Screen class to an Excel workbook. 
@@ -283,7 +283,8 @@ class _Screen(AnnData):
         _write_screen_to_excel(self,
                                  workbook_path,
                                  index,
-                                 silent,)
+                                 silent,
+                                 include_uns,)
         
     def to_csv(self, out_path="CRISPR_screen"):
         

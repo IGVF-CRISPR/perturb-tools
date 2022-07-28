@@ -21,7 +21,7 @@ def _append_dfs_and_name_from_dict(df_dict, df_list, sheet_names):
         sheet_names.append(".".join([subclass, key]))
     return df_list, sheet_names
 
-def _collect_screen_dfs(screen):
+def _collect_screen_dfs(screen, include_uns = False):
 
     """collect all main elements of a screen as a pandas DataFrame."""
 
@@ -37,16 +37,16 @@ def _collect_screen_dfs(screen):
     for i in [screen.condit_m, screen.condit_p]:
         df_list, sheet_names = _append_dfs_and_name_from_dict(i, df_list, sheet_names)
 
-    
-    for key in screen.uns.keys():
-        df_list.append(pd.DataFrame(screen.uns[key]))
-        sheet_names.append(".".join(["screen.uns", key]))
+    if include_uns:
+        for key in screen.uns.keys():
+            df_list.append(pd.DataFrame(screen.uns[key]))
+            sheet_names.append(".".join(["screen.uns", key]))
         
     return df_list, sheet_names
 
 
 def _write_screen_to_excel(
-    screen, workbook_path="./CRISPR_screen.xlsx", index=True, silent=False
+    screen, workbook_path="./CRISPR_screen.xlsx", index=True, silent=False, include_uns = False
 ):
     
     """
@@ -78,7 +78,7 @@ def _write_screen_to_excel(
     (1) 
     """
     
-    df_list, sheetnames = _collect_screen_dfs(screen)
+    df_list, sheetnames = _collect_screen_dfs(screen, include_uns = include_uns)
     workbook_path = _check_fix_file_extension(workbook_path, ".xlsx", silent)
     
     assert len(df_list) == len(sheetnames), print(
@@ -97,4 +97,9 @@ def _write_screen_to_excel(
                 sheet = sheetnames[n]
             if not silent:
                 print("\tSheet {}:\t{}".format(str(int(n + 1)), sheet))
-            df_.to_excel(writer, sheet, index=index)
+            try:
+                df_.to_excel(writer, sheet, index=index)
+            except ValueError as e:
+                print("While writing {}, following error occurred: passing the data.".format(n))
+                print(e)
+                continue

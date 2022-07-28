@@ -1,3 +1,4 @@
+import setuptools
 from setuptools import setup
 import re
 import os
@@ -6,7 +7,7 @@ import sys
 
 setup(
     name="perturb-tools",
-    version="0.0.12",
+    version="0.0.16",
     python_requires=">3.7.0",
     author="Michael E. Vinyard - Harvard University - Massachussetts General Hospital - Broad Institute of MIT and Harvard",
     author_email="mvinyard@broadinstitute.org",
@@ -14,17 +15,19 @@ setup(
     long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
     description="perturb-tools - Analysis Framework for Pooled CRISPR Genome Editing Screens.",
-    packages=[
-        "perturb_tools",
-        "perturb_tools._arithmetic",
-        "perturb_tools._experimental_design",
-        "perturb_tools._external_tools",
-        "perturb_tools._framework",
-        "perturb_tools._normalization",
-	"perturb_tools._plotting",
-	"perturb_tools._readwrite",
-	"perturb_tools._utilities",
-    ],
+    packages=setuptools.find_packages(),
+#    packages=[
+#        "perturb_tools",
+#        "perturb_tools._arithmetic",
+#        "perturb_tools._experimental_design",
+#        "perturb_tools._external_tools",
+#        "perturb_tools._framework",
+#        "perturb_tools._framework._supporting_functions",
+#        "perturb_tools._normalization",
+#	"perturb_tools._plotting",
+#	"perturb_tools._readwrite",
+#	"perturb_tools._utilities",
+#    ],
     
     install_requires=[
         "matplotlib>=3.4",
