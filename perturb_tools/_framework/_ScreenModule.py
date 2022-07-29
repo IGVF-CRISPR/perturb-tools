@@ -312,8 +312,12 @@ class _Screen(AnnData):
         mageck_input_df = pd.DataFrame(count_matrix,
             columns = self.condit.index,
             index = self.guides.index).fillna(0).astype(int)
-        mageck_input_df.insert(0, 'sgRNA', self.guides[sgrna_column])
+        if sgrna_column in self.guides.columns:
+            mageck_input_df.insert(0, 'sgRNA', self.guides[sgrna_column])
+        elif self.guides.index.name == sgrna_column:
+            mageck_input_df.insert(0, 'sgRNA', self.guides.index.tolist())
         mageck_input_df.insert(1, 'gene', self.guides[target_column])
+        
         if out_path is None:
             return(mageck_input_df)
         else:
