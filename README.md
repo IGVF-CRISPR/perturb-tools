@@ -39,7 +39,7 @@ This format and organization of metadata surrounding a multidimensional experime
 
 * **`screen.guides`** (pandas DataFrame) of shape: `[guides x guide_annotation]`
 
-See the [**tutorial**](perturb-tools/perturb_tools/screen_demo.ipynb) for more information.
+See the [**tutorial**](perturb_tools/screen_demo.ipynb) for more information.
 
 
 ## Installation
@@ -54,7 +54,7 @@ cd ./perturb-tools; pip install -e .
 ```
 
 ## General analysis Steps
-* See [**tutorial**](perturb-tools/perturb_tools/screen_demo.ipynb) which includes:
+* See [**tutorial**](perturb_tools/screen_demo.ipynb) which includes:
   * **API tutorial**
   * **Normalization**
   * **Arithmetic**
