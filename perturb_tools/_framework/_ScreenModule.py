@@ -316,6 +316,8 @@ class _Screen(AnnData):
             mageck_input_df.insert(0, 'sgRNA', self.guides[sgrna_column])
         elif self.guides.index.name == sgrna_column:
             mageck_input_df.insert(0, 'sgRNA', self.guides.index.tolist())
+        else:
+            raise ValueError("{} not found in Screen.guides.".format(sgrna_column))
         mageck_input_df.insert(1, 'gene', self.guides[target_column])
         
         if out_path is None:
