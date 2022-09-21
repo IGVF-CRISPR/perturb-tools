@@ -54,7 +54,7 @@ cd ./perturb-tools; pip install -e .
 ```
 
 ## General analysis Steps
-* [**API tutorial**](perturb_tools/_framework/README.md)
+* [**API tutorial**](perturb-tools/perturb_tools/screen_demo.ipynb)
 * [**Normalization**](perturb_tools/_normalization/README.md)
 * [**Arithmetic**](perturb_tools/_arithmetic/README.md)
    * Calculating the mean, standard deviation, and log-fold change between/across replicates
