@@ -1,6 +1,6 @@
 __module_name__ = "_read_screen_from_csv.py"
 import pandas as pd
-from perturb_tools import Screen
+from ..._framework._ScreenModule import _Screen
 def _read_csv(X_path=None,guide_path=None,condit_path=None,sep=","):
   if not X_path is None:
     X_df = pd.read_csv(X_path, delimiter=sep, header=0, index_col=0)
@@ -13,4 +13,4 @@ def _read_csv(X_path=None,guide_path=None,condit_path=None,sep=","):
     condit_df = pd.read_csv(condit_path, sep=sep)
   else: condit_df=None
 
-  return Screen(X=X, guides=guide_df, condit=condit_df)
+  return _Screen(X=X, guides=guide_df, condit=condit_df)
