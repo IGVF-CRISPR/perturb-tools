@@ -27,7 +27,7 @@ from .._utilities._funcs._update_dict import _update_dict
 class _Screen(AnnData):
     def __init__(self, X=None, guides= None, condit = None, *args, **kwargs):
         if X is not None:
-            super().__init__(X, obs = guides, var = condit, *args, **kwargs)
+            super().__init__(X, dtype=X.dtype, obs = guides, var = condit, *args, **kwargs)
             self.guides = self.obs
             self.condit = self.var
             self.condit_m = self.obsm
@@ -298,8 +298,9 @@ class _Screen(AnnData):
         _write_screen_to_csv(self, out_path)
 
     def to_mageck_input(self, out_path = None, count_layer = None,
-        sgrna_column = 'name',
-        target_column = 'target_id',):
+        sgrna_column = None,
+        target_column = 'target_id',
+        sample_prefix = ""):
         if count_layer is None:
             count_matrix = self.X
         else:
@@ -310,9 +311,11 @@ class _Screen(AnnData):
                     count_layer, self.layers.keys()
                 ))
         mageck_input_df = pd.DataFrame(count_matrix,
-            columns = self.condit.index,
+            columns = sample_prefix + self.condit.index,
             index = self.guides.index).fillna(0).astype(int)
-        if sgrna_column in self.guides.columns:
+        if sgrna_column is None:
+            mageck_input_df.insert(0, 'sgRNA', self.guides.index.tolist())
+        elif sgrna_column in self.guides.columns:
             mageck_input_df.insert(0, 'sgRNA', self.guides[sgrna_column])
         elif self.guides.index.name == sgrna_column:
             mageck_input_df.insert(0, 'sgRNA', self.guides.index.tolist())
@@ -343,3 +346,17 @@ def concat(screens, *args, **kwargs):
     adata = ad.concat(screens, *args, **kwargs)
     
     return(_Screen(adata))
+
+def read_csv(X_path=None,guide_path=None,condit_path=None,sep=","):
+  if not X_path is None:
+    X_df = pd.read_csv(X_path, delimiter=sep, header=0, index_col=0)
+    X = X_df.values
+  else: X=None
+  if not guide_path is None:
+    guide_df = pd.read_csv(guide_path, sep=sep)
+  else: guide_df=None
+  if not condit_path is None:
+    condit_df = pd.read_csv(condit_path, sep=sep)
+  else: condit_df=None
+
+  return _Screen(X=X, guides=guide_df, condit=condit_df)

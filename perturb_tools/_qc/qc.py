@@ -10,7 +10,7 @@ def set_count_stats(screen):
     screen.condit['median_X_bcmatch'] = np.nanmedian(screen.layers['X_bcmatch'],axis=0)
     if 'edits' in screen.layers.keys():
         screen.condit['median_edit'] = np.nanmedian(screen.layers['edits'],axis=0)
-        screen.get_edit_rate()
+        screen.get_guide_edit_rate()
         screen.condit['median_edit_rate'] = np.nanmedian(screen.layers['edit_rate'],axis=0)
 
 def set_sample_correlation_guides(screen:Screen, guide_idx, prefix="", method="Pearson"):
