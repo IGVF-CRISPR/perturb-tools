@@ -3,7 +3,6 @@ __module_name__ = "_ScreenModule.py"
 __author__ = ", ".join(["Michael E. Vinyard", "Jayoung Kim Ryu"])
 __email__ = ", ".join(["vinyard@g.harvard.edu", "jayoung_ryu@g.harvard.edu"])
 
-import copy
 import warnings
 from typing import Union
 
@@ -25,6 +24,18 @@ from ._supporting_functions._print_screen_object import _print_screen_object
 class _Screen(AnnData):
     def __init__(self, X=None, guides=None, condit=None, *args, **kwargs):
         super().__init__(X, dtype=X.dtype, obs=guides, var=condit, *args, **kwargs)
+
+    @classmethod
+    def from_adata(cls, adata: ad.AnnData):
+        return cls(
+            (adata.X),
+            guides=(adata.obs),
+            condit=(adata.var),
+            obsm=adata.obsm,
+            obsp=adata.obsp,
+            uns=(adata.uns),
+            layers=(adata.layers),
+        )
 
     @property
     def guides(self):
@@ -360,7 +371,8 @@ class _Screen(AnnData):
 
 
 def read_h5ad(filename):
-    return _Screen.read_h5ad(filename)
+    adata = ad.read_h5ad(filename)
+    return _Screen.from_adata(filename)
 
 
 def concat(screens, *args, **kwargs):
