@@ -43,7 +43,7 @@ class _Screen(AnnData):
 
     @property
     def condit(self):
-        return self.condit
+        return self.var
 
     def __repr__(self) -> str:
         return _print_screen_object(self)[2]
@@ -365,14 +365,12 @@ class _Screen(AnnData):
         """
         Write .h5ad
         """
-        self.obs = self.guides
-        self.var = self.condit
         super().write(out_path)
 
 
 def read_h5ad(filename):
     adata = ad.read_h5ad(filename)
-    return _Screen.from_adata(filename)
+    return _Screen.from_adata(adata)
 
 
 def concat(screens, *args, **kwargs):
