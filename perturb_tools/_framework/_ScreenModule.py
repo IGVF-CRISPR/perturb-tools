@@ -3,49 +3,36 @@ __module_name__ = "_ScreenModule.py"
 __author__ = ", ".join(["Michael E. Vinyard", "Jayoung Kim Ryu"])
 __email__ = ", ".join(["vinyard@g.harvard.edu", "jayoung_ryu@g.harvard.edu"])
 
-
-import pandas as pd
-import numpy as np
-from anndata import AnnData
-import anndata as ad
 import copy
 import warnings
+from typing import Union
 
-from ._supporting_functions._print_screen_object import _print_screen_object
-from ._supporting_functions._guides._GuideAnnotationModule import _annotate_sgRNAs
-from .._normalization._funcs._read_count_norm import _log_normalize_read_count
-from ._supporting_functions._print_screen_object import _print_screen_object
+import anndata as ad
+import numpy as np
+import pandas as pd
+from anndata import AnnData
+
 from .._arithmetic._funcs._log_fold_change import _log_fold_change
-
+from .._normalization._funcs._read_count_norm import _log_normalize_read_count
+from .._readwrite._funcs._read_screen_from_PoolQ import _read_screen_from_PoolQ
 from .._readwrite._funcs._write_screen_to_csv import _write_screen_to_csv
 from .._readwrite._funcs._write_screen_to_excel import _write_screen_to_excel
-from .._readwrite._funcs._read_screen_from_PoolQ import _read_screen_from_PoolQ
-
 from .._utilities._funcs._update_dict import _update_dict
+from ._supporting_functions._guides._GuideAnnotationModule import _annotate_sgRNAs
+from ._supporting_functions._print_screen_object import _print_screen_object
 
 
 class _Screen(AnnData):
     def __init__(self, X=None, guides=None, condit=None, *args, **kwargs):
-        if X is not None:
-            super().__init__(X, dtype=X.dtype, obs=guides, var=condit, *args, **kwargs)
-            self.guides = self.obs
-            self.condit = self.var
-            self.condit_m = self.obsm
-            self.condit_p = self.obsp
-            n_guides, n_conditions, _ = _print_screen_object(self)
+        super().__init__(X, dtype=X.dtype, obs=guides, var=condit, *args, **kwargs)
 
-    @classmethod
-    def from_adata(cls, adata):
-        repscreen = cls(
-            (adata.X),
-            guides=(adata.obs),
-            condit=(adata.var),
-            obsm=adata.obsm,
-            obsp=adata.obsp,
-            uns=(adata.uns),
-            layers=(adata.layers),
-        )
-        return repscreen
+    @property
+    def guides(self):
+        return self.obs
+
+    @property
+    def condit(self):
+        return self.condit
 
     def __repr__(self) -> str:
         return _print_screen_object(self)[2]
@@ -54,24 +41,12 @@ class _Screen(AnnData):
         if all(self.guides.index == other.guides.index) and all(
             self.condit.index == other.condit.index
         ):
-            added = _Screen(self.X + other.X, self.guides.copy(), self.condit.copy())
-            return added
+            return _Screen(self.X + other.X, self.guides.copy(), self.condit.copy())
         else:
             raise ValueError("Guides/sample description mismatch")
 
-    def __getitem__(self, index):
-        """TODO: currently the condit names are in ['index'] column. Making it to be the idnex will
-        allow the subsetting by condition names.
-        """
-        adata = super().__getitem__(index)
-        return type(self).from_adata(adata)
-
     def read_PoolQ(self, path, metadata=False, merge_metadata_on="Condition"):
-
-        """
-        Read poolQ.
-        """
-
+        """Read poolQ."""
         self._PoolQ_outpath = path
         self._PoolQScreenDict = _read_screen_from_PoolQ(self._PoolQ_outpath)
 
@@ -106,7 +81,7 @@ class _Screen(AnnData):
         if read_count_layer is None:
             self.layers[output_layer] = _log_normalize_read_count(self.X)
         else:
-            output_layer = "lognorm_{}".format(read_count_layer)
+            output_layer = f"lognorm_{read_count_layer}"
             self.layers[output_layer] = _log_normalize_read_count(
                 self.layers[read_count_layer]
             )
@@ -139,13 +114,13 @@ class _Screen(AnnData):
         cond2_idx = np.where(cond2 == self.condit.index)[0]
         if len(cond1_idx) != 1 or len(cond2_idx) != 1:
             if len(cond1_idx) == 0:
-                print("No condition named {} in Screen object.".format(cond1))
+                print(f"No condition named {cond1} in Screen object.")
             else:
-                print("Duplicate condition name {} in Screen object".format(cond1))
+                print(f"Duplicate condition name {cond1} in Screen object")
             if len(cond2_idx) == 0:
-                print("No condition named {} in Screen object.".format(cond2))
+                print(f"No condition named {cond2} in Screen object.")
             else:
-                print("Duplicate condition name {} in Screen object".format(cond2))
+                print(f"Duplicate condition name {cond2} in Screen object")
             raise ValueError("")
 
         try:
@@ -155,14 +130,14 @@ class _Screen(AnnData):
             if return_result:
                 return lfc
             else:
-                self.guides["{}_{}.{}".format(cond1, cond2, out_guides_suffix)] = lfc
+                self.guides[f"{cond1}_{cond2}.{out_guides_suffix}"] = lfc
         except:  # TBD: what error?
             print("Calculating LFC against two previously calculated LFC values...")
             dlfc = _log_fold_change(self.guides, cond1, cond2)
 
             if not name:
-                name = "{}_{}.d{}".format(
-                    cond1.strip(".lfc"), cond2.strip(".lfc"), out_guides_suffix
+                name = (
+                    f'{cond1.strip(".lfc")}_{cond2.strip(".lfc")}.d{out_guides_suffix}'
                 )
 
             if return_result:
@@ -182,9 +157,9 @@ class _Screen(AnnData):
     ):
 
         if rep_condit not in self.condit.columns:
-            raise ValueError("{} not in condit features".format(rep_condit))
+            raise ValueError(f"{rep_condit} not in condit features")
         if compare_condit not in self.condit.columns:
-            raise ValueError("{} not in condit features".format(compare_condit))
+            raise ValueError(f"{compare_condit} not in condit features")
 
         lfcs = []
         for rep in self.condit[rep_condit].unique():
@@ -213,7 +188,7 @@ class _Screen(AnnData):
 
         lfcs_array = np.concatenate(lfcs, axis=1)
         lfcs_df_columns = [
-            s + ".{}_{}.{}".format(cond1, cond2, out_guides_suffix)
+            f"{s}.{cond1}_{cond2}.{out_guides_suffix}"
             for s in self.condit[rep_condit].unique()
         ]
         lfcs_df = pd.DataFrame(
@@ -262,60 +237,47 @@ class _Screen(AnnData):
 
         if return_result:
             return lfcs_agg
+        if name is None:
+            self.guides[
+                f"{cond1}_{cond2}.{out_guides_suffix}.{aggregate_fn}"
+            ] = lfcs_agg
         else:
-            if name is None:
-                self.guides[
-                    "{}_{}.{}.{}".format(cond1, cond2, out_guides_suffix, aggregate_fn)
-                ] = lfcs_agg
-            else:
-                self.guides[name] = lfcs_agg
+            self.guides[name] = lfcs_agg
 
-    def fold_change(self, cond1, cond2, lognorm_counts_key="lognorm_counts"):
+    def fold_change(
+        self,
+        cond1: str,
+        cond2: str,
+        lognorm_counts_key: str = "lognorm_counts",
+        return_result: bool = False,
+    ) -> Union[None, pd.Series]:
+        """Calculate log fold change (cond1/cond2) of normalized guide abundances."""
 
-        """
-        # incomplete
-        """
-
-        self.guides["{}_{}.fc".format(cond1, cond2)] = _log_fold_change(
+        log_fold_change = _log_fold_change(
             self.layers[lognorm_counts_key], cond1, cond2
         )
+        if return_result:
+            return log_fold_change
+        self.guides[f"{cond1}_{cond2}.fc"] = log_fold_change
 
     def to_Excel(
         self,
-        workbook_path="CRISPR_screen.workbook.xlsx",
-        index=False,
-        silent=False,
-        include_uns=False,
-    ):
+        workbook_path: str = "CRISPR_screen.workbook.xlsx",
+        index: bool = False,
+        silent: bool = False,
+        include_uns: bool = False,
+    ) -> None:
+        """Write components of Screen class to an Excel workbook.
 
-        """
-        Write components of Screen class to an Excel workbook.
-
-        Parameters:
-        -----------
-        workbook_path
-            Prevent printing outpaths / details of the created workbook.
-            default: "CRISPR_screen.workbook.xlsx"
-            type: str
-
-        index
-            Include an index in the workbook sheet.
-            default: False
-            type: bool
-
-        silent
-            Prevent printing outpaths / details of the created workbook.
-            default: False
-            type: bool
-
-        Returns:
-        --------
-        None, writes to excel workbook.
+        Args
+        ---
+        workbook_path: Prevent printing outpaths / details of the created workbook.
+        index: If True, include an index in the workbook sheet.
+        silent: If True, prevent printing outpaths / details of the created workbook.
 
         Notes:
         ------
         (1) Will likely need to be updated once we fully transition over to AnnData-like class.
-
         """
 
         _write_screen_to_excel(
@@ -344,17 +306,19 @@ class _Screen(AnnData):
         target_column="target_id",
         sample_prefix="",
     ):
+        """Formats screen object into mageck input.
+
+        If screen.guides[target_column] is None or np.isnan, remove that guide
+        """
         if count_layer is None:
             count_matrix = self.X
         else:
             try:
                 count_matrix = self.layers[count_layer]
-            except KeyError:
+            except KeyError as exc:
                 raise KeyError(
-                    "Layer {} doesn't exist in Screen object with layers {}".format(
-                        count_layer, self.layers.keys()
-                    )
-                )
+                    f"Layer {count_layer} doesn't exist in Screen object with layers {self.layers.keys()}"
+                ) from exc
         mageck_input_df = (
             pd.DataFrame(
                 count_matrix,
@@ -371,9 +335,16 @@ class _Screen(AnnData):
         elif self.guides.index.name == sgrna_column:
             mageck_input_df.insert(0, "sgRNA", self.guides.index.tolist())
         else:
-            raise ValueError("{} not found in Screen.guides.".format(sgrna_column))
+            raise ValueError(f"{sgrna_column} not found in Screen.guides.")
+        mageck_input_df["sgRNA"] = mageck_input_df["sgRNA"].map(
+            lambda s: s.replace(" ", "_")
+        )
         mageck_input_df.insert(1, "gene", self.guides[target_column])
-
+        mageck_input_df = mageck_input_df.loc[
+            (mageck_input_df.gene.map(lambda o: not pd.isnull(o)))
+            & mageck_input_df.gene.map(bool),
+            :,
+        ]
         if out_path is None:
             return mageck_input_df
         else:
@@ -389,8 +360,7 @@ class _Screen(AnnData):
 
 
 def read_h5ad(filename):
-    adata = ad.read_h5ad(filename)
-    return _Screen.from_adata(adata)
+    return _Screen.read_h5ad(filename)
 
 
 def concat(screens, *args, **kwargs):
@@ -400,18 +370,11 @@ def concat(screens, *args, **kwargs):
 
 
 def read_csv(X_path=None, guide_path=None, condit_path=None, sep=","):
-    if not X_path is None:
+    if X_path is not None:
         X_df = pd.read_csv(X_path, delimiter=sep, header=0, index_col=0)
         X = X_df.values
     else:
         X = None
-    if not guide_path is None:
-        guide_df = pd.read_csv(guide_path, sep=sep)
-    else:
-        guide_df = None
-    if not condit_path is None:
-        condit_df = pd.read_csv(condit_path, sep=sep)
-    else:
-        condit_df = None
-
+    guide_df = pd.read_csv(guide_path, sep=sep) if guide_path is not None else None
+    condit_df = None if condit_path is None else pd.read_csv(condit_path, sep=sep)
     return _Screen(X=X, guides=guide_df, condit=condit_df)
