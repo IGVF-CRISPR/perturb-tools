@@ -35,7 +35,8 @@ Adhering to the above structure (or some structure - as long as it follows somew
 
 ### Contributing
 
-In order to stay organzed, let's all contribute through PRs. Think of a PR as the main topic you are planning to contribute (e.g. **[`guide_design`](https://github.com/pinellolab/perturb-tools/pull/5)** or `guide_counting`). If PRs and issues are foreign to you, just ask! The best way to learn git workflows is through doing. Every time we open a PR, we should organize sub-tasks as issues and link them to that PR. Conversations, feedback, and requested changes can all be mediated through the PRs. 
+In order to stay organzed, let's all contribute through PRs. Think of a PR as the main topic you are planning to contribute (`qc` or `guide_counting`). If PRs and issues are foreign to you, just ask! The best way to learn git workflows is through doing. Every time we open a PR, we should organize sub-tasks as issues and link them to that PR. Conversations, feedback, and requested changes can all be mediated through the PRs. 
 
 #### Acknowledgement
 `README`/collaborative package development practice advice from @mvinyard
+
