@@ -1,4 +1,4 @@
-# single-cell-crispr-tool
+# sccrispr-tools
 Utility package for single-cell CRISPR screens pipeline with paired single-cell omics and guide counts
 
 ### Planning
@@ -8,7 +8,7 @@ We have a **[PR](https://github.com/IGVF-CRISPR/sccrispr-tool/pull/1)** for plan
 In general the structure could look something like the following:
 
 ```
-IGVF-CRISPR/single-cell-crispr-pipeline/
+IGVF-CRISPR/sccrispr-tools/
 │
 ├── LICENSE
 ├── notebooks
@@ -18,7 +18,7 @@ IGVF-CRISPR/single-cell-crispr-pipeline/
 ├── requirements.txt
 ├── setup.py
 │
-├── sccrispr-tool/
+├── sccrispr-tools/
 │   ├── __init__.py
 │   ├── data_structure/
 │   │    ├── ...
