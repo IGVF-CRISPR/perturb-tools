@@ -67,5 +67,10 @@ def calculate_distance(
         mdata.var[f"{mod1}:{start_col}"].astype(float).values[:, None]
         - mdata.var[f"{mod2}:{start_col}"].astype(float).values
     )
-    distance = distance * mdata.varp[same_chrom_key]
-    mdata.varp[output_key] = scipy.sparse.coo_matrix(distance)
+    same_chrom = mdata.varp[same_chrom_key]
+    mdata.varp[output_key] = scipy.sparse.coo_matrix(
+        (
+            np.squeeze(np.asarray(distance[same_chrom.row, same_chrom.col])),
+            (same_chrom.row, same_chrom.col),
+        )
+    )
