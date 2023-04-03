@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sccrispr-tools_IGVF-CRISPR"
+version = "0.0.1"
+authors = [
+  { name="Jayoung Ryu", email="jayoung_ryu@g.harvard.edu" },
+]
+description = "Utility package for single-cell CRISPR screens with paired single-cell omics and guide counts"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/IGVF-CRISPR/sccrispr-tools"
+"Bug Tracker" = "https://github.com/IGVF-CRISPR/sccrispr-tools/issues"
