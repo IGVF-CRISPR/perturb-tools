@@ -23,6 +23,9 @@ IGVF-CRISPR/sccrispr-tools/
 │   ├── framework/
 │   │    ├── ...
 │   │    
+│   ├── plotting/
+│   │    ├── ...
+│   │    
 │   ├── qc/
 │   │    ├── ...
 │   │     
