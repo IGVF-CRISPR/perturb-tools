@@ -20,7 +20,7 @@ IGVF-CRISPR/sccrispr-tools/
 │
 ├── sccrispr-tools/
 │   ├── __init__.py
-│   ├── data_structure/
+│   ├── framework/
 │   │    ├── ...
 │   │    
 │   ├── qc/
