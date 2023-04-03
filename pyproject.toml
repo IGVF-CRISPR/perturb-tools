@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "sccrispr-tools_IGVF-CRISPR"
+name = "sccrispr"
 version = "0.0.1"
 authors = [
   { name="Jayoung Ryu", email="jayoung_ryu@g.harvard.edu" },
