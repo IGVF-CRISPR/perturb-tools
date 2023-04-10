@@ -1,10 +1,9 @@
-
 import numpy as np
+
 
 def _determine_overlap_3prime(
     fragment1_start, fragment1_stop, fragment2_start, fragment2_stop
 ):
-
     """
     Observe whether the start-site of fragment2 overlaps the 3' end of fragment1.
 
@@ -33,7 +32,6 @@ def _determine_overlap_3prime(
 def _determine_overlap_5prime(
     fragment1_start, fragment1_stop, fragment2_start, fragment2_stop
 ):
-
     """
     Observe whether the start-site of fragment2 overlaps the 5' end of fragment1.
 
@@ -59,8 +57,9 @@ def _determine_overlap_5prime(
     return (fragment2_start < fragment1_start) and (fragment2_stop > fragment1_start)
 
 
-def _determine_partial_overlapping_fragments(df, silent, start_key="Start", end_key="End"):
-
+def _determine_partial_overlapping_fragments(
+    df, silent, start_key="Start", end_key="End"
+):
     """
 
     Parameters:
@@ -79,7 +78,6 @@ def _determine_partial_overlapping_fragments(df, silent, start_key="Start", end_
 
     for fragment1 in range(len(df)):
         for fragment2 in range(len(df)):
-
             if _determine_overlap_3prime(
                 df[start_key].iloc[fragment1],
                 df[end_key].iloc[fragment1],
@@ -116,13 +114,13 @@ def _determine_total_overlap(
     return (fragment1_start < fragment2_start) and (fragment1_stop > fragment2_stop)
 
 
-def _determine_total_overlapping_fragments(df, silent=False, start_key="Start", end_key="End"):
-
+def _determine_total_overlapping_fragments(
+    df, silent=False, start_key="Start", end_key="End"
+):
     overlapped_fragments = []
 
     for fragment1 in range(len(df)):
         for fragment2 in range(len(df)):
-
             if _determine_total_overlap(
                 df[start_key].iloc[fragment1],
                 df[end_key].iloc[fragment1],
@@ -145,8 +143,9 @@ def _determine_total_overlapping_fragments(df, silent=False, start_key="Start", 
     return np.unique(overlapped_fragments)
 
 
-def _drop_totally_overlapped_fragments(df, overlapped_fragments_list, start_key="Start", end_key="End"):
-
+def _drop_totally_overlapped_fragments(
+    df, overlapped_fragments_list, start_key="Start", end_key="End"
+):
     """"""
 
     print("\nDropping the following exonic regions due to overlap:\n")
@@ -159,7 +158,6 @@ def _drop_totally_overlapped_fragments(df, overlapped_fragments_list, start_key=
 
 
 def _identify_unique_fragments(df, start_key="Start", end_key="End"):
-
     df = df.reset_index(drop=True)
     df_ = (
         df.sort_values(start_key)
@@ -175,9 +173,9 @@ def _identify_unique_fragments(df, start_key="Start", end_key="End"):
 
     return _df_.reset_index(drop=True)
 
+
 class _OverlappingFragments:
     def __init__(self, df, silent=False):
-
         self.silent = silent
         if not self.silent:
             print("Removing duplicate rows")
@@ -187,7 +185,6 @@ class _OverlappingFragments:
         self.OverlappingFragmentDict = {}
 
     def find_total(self):
-
         self.OverlappingFragmentDict["total"] = _determine_total_overlapping_fragments(
             self.df, self.silent
         )
@@ -197,21 +194,16 @@ class _OverlappingFragments:
         )
 
     def find_equal_endpoint_fragments(self):
-
-        self.OverlappingFragmentDict["longer_idx"] = _identify_unique_short_fragments(
-            self.df
-        )
+        self.OverlappingFragmentDict["longer_idx"] = _identify_unique_fragments(self.df)
 
         self.df = self.df.iloc[self.OverlappingFragmentDict["longer_idx"]]
 
     def find_partial(self):
-
         self.OverlappingFragmentDict[
             "partial"
         ] = _determine_partial_overlapping_fragments(self.df, self.silent)
 
     def find_all(self):
-
         self.OverlappingFragmentDict["total"] = _determine_total_overlapping_fragments(
             self.df, self.silent
         )

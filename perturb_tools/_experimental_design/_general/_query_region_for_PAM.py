@@ -1,13 +1,13 @@
+from typing import Tuple
+import regex
+import numpy as np
+from Bio import SeqIO
+
 
 from ..._utilities._funcs._SequenceManipulation import _SequenceManipulation
-from Bio import SeqIO
-import pandas as pd
-import numpy as np
-import regex
 
 
-def _get_seq_one_chr(ref_seq_path, query_chr):
-
+def _get_seq_one_chr(ref_seq_path, query_chr) -> Tuple[str, int]:
     """
     Get a specific chromosome sequence from a reference genome. Also report the length of that sequence.
     Parameters:
@@ -20,21 +20,19 @@ def _get_seq_one_chr(ref_seq_path, query_chr):
     Returns:
     --------
     chromosome_reference_seq
-    
+
     len(chromosome_reference_seq)
     """
 
     for record in SeqIO.parse(ref_seq_path, "fasta"):
-
         if record.description.split()[0] == query_chr:
             chromosome_reference_seq = str(record.seq)
-
             return chromosome_reference_seq, len(chromosome_reference_seq)
+
 
 def _adjust_reverse_strand_coords_to_forward(
     reverse_seq_pam_match_coords, chromosome_length
 ):
-
     """
     Given a pam and a sequece, find sgRNAs within that sequence.
     Parameters:
@@ -47,11 +45,10 @@ def _adjust_reverse_strand_coords_to_forward(
         Numpy array contianing loci of the first base in the PAM sequence. Numbers start left to right (3' to 5')
     """
 
-    return (chromosome_length - reverse_seq_pam_match_coords)
+    return chromosome_length - reverse_seq_pam_match_coords
 
 
 def _find_pam_loci_whole_chromosome(ref_seq_path, query_chr, PAM="NGG"):
-
     """
     Given a pam and a sequece, find sgRNAs within that sequence.
     Parameters:
@@ -85,10 +82,10 @@ def _find_pam_loci_whole_chromosome(ref_seq_path, query_chr, PAM="NGG"):
             r"%s" % (pam), reference_chromosome_sequence, overlapped=True
         )
     ]
-    
+
     ref_seq = _SequenceManipulation(reference_chromosome_sequence)
     reverse_complement_seq = ref_seq.reverse_complement()
-    
+
     reverse_complement_seq_pam_match_coords = [
         m.span()[0]
         for m in regex.finditer(r"%s" % (pam), reverse_complement_seq, overlapped=True)
@@ -107,7 +104,7 @@ def _find_pam_loci_whole_chromosome(ref_seq_path, query_chr, PAM="NGG"):
         str(len(reverse_complement_seq_pam_match_coords)),
         "\nPAM matches identified along the reverse strand of query chromsome.\n",
     )
-    
+
     reverse_complement_seq_pam_match_coords_adjusted = (
         _adjust_reverse_strand_coords_to_forward(
             reverse_complement_seq_pam_match_coords, chromosome_length
@@ -117,19 +114,21 @@ def _find_pam_loci_whole_chromosome(ref_seq_path, query_chr, PAM="NGG"):
     return (
         forward_seq_pam_match_coords,
         reverse_complement_seq_pam_match_coords_adjusted,
-        reference_chromosome_sequence
+        reference_chromosome_sequence,
     )
 
-def _get_PAMS_in_regions(regions_df, ref_seq_path, chromosome_key="Chromosome", PAM="NGG"):
-    
+
+def _get_PAMS_in_regions(
+    regions_df, ref_seq_path, chromosome_key="Chromosome", PAM="NGG"
+):
     """
     Looks for PAM loci one chromosome at a time. Any chromosome specified in the peaks bed file is included.
-    
+
     Parameters:
     -----------
     atac_peaks_path
-        Path to a bed file of genomic loci. 
-    
+        Path to a bed file of genomic loci.
+
     ref_seq_path
         Path to a reference genome fasta file.
     PAM
@@ -144,7 +143,6 @@ def _get_PAMS_in_regions(regions_df, ref_seq_path, chromosome_key="Chromosome", 
     chrom_seqs = []
 
     for chrom in regions_df[chromosome_key].unique():
-
         forw_chr, revr_chr, chrom_seq = _find_pam_loci_whole_chromosome(
             ref_seq_path, query_chr=chrom, PAM=PAM
         )
@@ -154,8 +152,10 @@ def _get_PAMS_in_regions(regions_df, ref_seq_path, chromosome_key="Chromosome", 
 
     return forward_pams, reverse_pams, chrom_seqs
 
-def _query_region_for_PAM(regions_df, ref_seq_path, chromosome_key="Chromosome", PAM="NGG"):
 
+def _query_region_for_PAM(
+    regions_df, ref_seq_path, chromosome_key="Chromosome", PAM="NGG"
+):
     """
     Looks for PAM loci one chromosome at a time. Any chromosome specified in the peaks bed file is included.
 
@@ -180,12 +180,11 @@ def _query_region_for_PAM(regions_df, ref_seq_path, chromosome_key="Chromosome",
     chrom_seqs = []
 
     for chrom in regions_df[chromosome_key].unique():
-
         forw_chr, revr_chr, chrom_seq = _find_pam_loci_whole_chromosome(
             ref_seq_path, query_chr=chrom, PAM=PAM
         )
         forward_pams.append(forw_chr)
         reverse_pams.append(revr_chr)
         chrom_seqs.append(chrom_seq)
-        
+
     return forward_pams, reverse_pams, chrom_seqs

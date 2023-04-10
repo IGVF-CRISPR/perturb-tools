@@ -1,11 +1,8 @@
 import scipy.stats
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
 
 
 def _calculate_enrichment_pvalues(arr1, arr2):
-
     """
     Calculate the probability that two values drawn N times (len(row)) are from distinct distributions.
 
@@ -29,7 +26,6 @@ def _calculate_enrichment_pvalues(arr1, arr2):
     p_vals = []
 
     for row in range(len(arr1)):
-
         cond1 = arr1[row]
         cond2 = arr2[row]
 
@@ -39,7 +35,6 @@ def _calculate_enrichment_pvalues(arr1, arr2):
 
 
 def _calculate_baseline_subtraction(condit_1, condit_2, control):
-
     """Calculate the log fold change relative to the control (i.e., perform baseline subtraction).
 
     Assumes log-transformed values."""
@@ -51,7 +46,6 @@ def _calculate_baseline_subtraction(condit_1, condit_2, control):
 
 
 def _calculate_delta_logfoldchange(condit_1, condit_2):
-
     """
     Calculate the delta log fold change in guide counts between
     two conditions. Calculates the mean and standard deviation

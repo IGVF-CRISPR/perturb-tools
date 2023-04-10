@@ -1,13 +1,16 @@
-
 # _flexible_mkdir.py
 __module_name__ = "_flexible_mkdir.py"
 __author__ = ", ".join(["Michael E. Vinyard"])
-__email__ = ", ".join(["vinyard@g.harvard.edu",])
+__email__ = ", ".join(
+    [
+        "vinyard@g.harvard.edu",
+    ]
+)
 
 
 # package imports #
 # --------------- #
-#import licorice
+# import licorice
 import os
 
 
@@ -16,10 +19,9 @@ import os
 
 
 def _flexible_mkdir(path, verbose):
-
     if os.path.exists(path):
         pass
-    elif path == '':
+    elif path == "":
         pass
     else:
         os.mkdir(path)
@@ -29,7 +31,6 @@ def _flexible_mkdir(path, verbose):
 
 
 def _flexible_multilevel_mkdir(path, verbose=True):
-
     """
     Create a directory or ignore if already present. Can create multiple levels of directories.
     Parameters:
@@ -47,7 +48,6 @@ def _flexible_multilevel_mkdir(path, verbose=True):
     parsed_path = []
 
     for n, directory in enumerate(path.split("/")):
-                
         parsed_path.append(directory)
         if len(parsed_path) == (len(path.split("/")) - 1):
             _flexible_mkdir("/".join(parsed_path), verbose)

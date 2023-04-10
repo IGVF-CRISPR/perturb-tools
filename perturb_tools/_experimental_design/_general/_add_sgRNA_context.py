@@ -1,9 +1,9 @@
-### get context info for sgRNA
-
+"""get sequence context info for sgRNA"""
+from typing import Sequence
 import pandas as pd
 
-def _get_reverse_sgRNA_context(seq, df, flank_N):
 
+def _get_reverse_sgRNA_context(seq: Sequence[str], df: pd.DataFrame, flank_N: int):
     """"""
 
     # isolate all reverse strand sgRNAs
@@ -26,8 +26,7 @@ def _get_reverse_sgRNA_context(seq, df, flank_N):
     return reverse_guides
 
 
-def _get_forward_sgRNA_context(seq, df, flank_N):
-
+def _get_forward_sgRNA_context(seq: Sequence[str], df: pd.DataFrame, flank_N: int):
     """"""
 
     # isolate all reverse strand sgRNAs
@@ -50,8 +49,7 @@ def _get_forward_sgRNA_context(seq, df, flank_N):
     return forward_guides
 
 
-def _add_sgRNA_context(df, chrom_seq, flank_N=10):
-
+def _add_sgRNA_context(df: pd.DataFrame, chrom_seq: Sequence[str], flank_N: int = 10):
     """
     Get the flanking N nts (default N=10) around a protospacer + PAM
     DF and chrom_seqs must be sorted by chromosome order
@@ -60,7 +58,6 @@ def _add_sgRNA_context(df, chrom_seq, flank_N=10):
     dfs = []
 
     for i, chrom in enumerate(df["Chromosome"].unique()):
-
         chrom_df = df.loc[df["Chromosome"] == chrom]
 
         forw_context_added_df = _get_forward_sgRNA_context(
@@ -70,9 +67,7 @@ def _add_sgRNA_context(df, chrom_seq, flank_N=10):
             chrom_seq[i], chrom_df, flank_N
         )
 
-        dfs.append(forw_context_added_df)
-        dfs.append(rev_context_added_df)
-
+        dfs.extend((forw_context_added_df, rev_context_added_df))
     df = pd.concat(dfs)
 
     return df

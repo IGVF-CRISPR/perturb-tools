@@ -1,19 +1,22 @@
-
 # _print_screen_object.py
 __module_name__ = "_print_screen_object.py"
-__author__ = ", ".join(["Michael E. Vinyard"])
-__email__ = ", ".join(["vinyard@g.harvard.edu",])
+__author__ = ", ".join(["Michael E. Vinyard", "Jayoung Ryu"])
+__email__ = ", ".join(["vinyard@g.harvard.edu", "jayoung_ryu@g.harvard.edu"])
+from anndata import AnnData
 
 
-def _print_screen_object(ScreenObject):
-
+def _print_screen_object(ScreenObject: AnnData):
     """
     Would be good to return an organizational dictionary
     """
 
-    n_guides, n_conditions = ScreenObject.X.shape[0], ScreenObject.X.shape[1]
+    n_samples, n_guides = ScreenObject.shape[0], ScreenObject.shape[1]
 
-    descr = "Genome Editing Screen comprised of n_guides x n_conditions = {} x {}\n".format(n_guides, n_conditions)
+    descr = (
+        "Genome Editing Screen comprised of n_samples x n_guides = {} x {}\n".format(
+            n_guides, n_samples
+        )
+    )
 
     MainScreenAttributes = [
         "guides",
@@ -34,4 +37,4 @@ def _print_screen_object(ScreenObject):
                 descr += "'{}'".format(i)
         descr += "\n"
 
-    return n_guides, n_conditions, descr
+    return n_guides, n_samples, descr

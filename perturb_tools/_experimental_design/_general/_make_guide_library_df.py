@@ -1,21 +1,24 @@
-
 from ._annotate_protospacer import _annotate_protospacer
 
 import pandas as pd
 import numpy as np
 
+
 def _add_guide_region_info(df):
-    
     df["region_center"] = np.round(
-    np.mean(np.stack([df['region_left'].values, df['region_right'].values]), axis=0)
-        ).astype(int)
+        np.mean(np.stack([df["region_left"].values, df["region_right"].values]), axis=0)
+    ).astype(int)
     df["PAM_distance_to_center"] = np.round(abs(df.PAM_loci - df["region_center"]))
-    
+
     return df
 
 
-def _assign_pam_loci_to_peaks(pam_loci, chromosome_peaks, start_key="Start", end_key="End"):
-
+def _assign_pam_loci_to_peaks(
+    pam_loci: np.ndarray,
+    chromosome_peaks: pd.DataFrame,
+    start_key: str = "Start",
+    end_key: str = "End",
+):
     """
     Bins PAM loci into peak "bins". DataFrame will still need cleaning after generation. Handled by separate function.
     Parameters:
@@ -31,19 +34,21 @@ def _assign_pam_loci_to_peaks(pam_loci, chromosome_peaks, start_key="Start", end
     peak_widths
         loci of peak "bins"
     """
-    
+
     loci_peak_assignment, peak_widths = pd.cut(
         pam_loci,
-        np.column_stack((chromosome_peaks[start_key], chromosome_peaks[end_key])).flatten(),
-        retbins=True,
+        np.column_stack(
+            [chromosome_peaks[start_key], chromosome_peaks[end_key]]
+        ).flatten(),  # type: ignore
+        retbins=True,  # type: ignore
     )
 
     peak_assigned_loci_df = pd.DataFrame(np.stack([pam_loci, loci_peak_assignment]).T)
 
     return peak_assigned_loci_df, peak_widths
 
-def _reformat_peaks_annotations(pam_loci_df, peak_bins):
 
+def _reformat_peaks_annotations(pam_loci_df, peak_bins):
     """
     Reformat dataframe of peak-assigned pam loci to a neater df.
     Parameters:
@@ -67,7 +72,6 @@ def _reformat_peaks_annotations(pam_loci_df, peak_bins):
     index = np.array([])
 
     for a, i in enumerate(pam_loci_df[1]):
-
         if i.left in left:
             pams_in_regions_left = np.append(pams_in_regions_left, i.left)
         if i.right in right:
@@ -78,12 +82,13 @@ def _reformat_peaks_annotations(pam_loci_df, peak_bins):
         np.vstack([index, pams_in_regions_left, pams_in_regions_right]).T,
         columns=["PAM_loci", "region_left", "region_right"],
     )
-    
+
     return df
 
 
-def _assemble_pam_loci_df(forward, reverse, chromosome_peaks, chromosome_key="Chromosome"):
-
+def _assemble_pam_loci_df(
+    forward, reverse, chromosome_peaks, chromosome_key="Chromosome"
+):
     """
     Bins PAM loci into peak "bins". Mindful of strand information. Uses adjusted reverse strand loci values.
     Parameters:
@@ -100,7 +105,6 @@ def _assemble_pam_loci_df(forward, reverse, chromosome_peaks, chromosome_key="Ch
         cleaned DataFrame containing PAM loci, strand assignment, and peak annotation.
     """
 
- 
     forward_pam_peak_assigned, peak_widths_forward = _assign_pam_loci_to_peaks(
         forward, chromosome_peaks
     )
@@ -135,14 +139,15 @@ def _assemble_pam_loci_df(forward, reverse, chromosome_peaks, chromosome_key="Ch
 
     return df
 
-def _make_guide_library_df(forward_pams, reverse_pams, peak_df, chrom_seqs, chromosome_key="Chromosome"):
 
+def _make_guide_library_df(
+    forward_pams, reverse_pams, peak_df, chrom_seqs, chromosome_key="Chromosome"
+):
     """"""
 
     appended_dfs = []
 
     for i, chrom in enumerate(peak_df[chromosome_key].unique()):
-
         df = _assemble_pam_loci_df(
             forward_pams[i],
             reverse_pams[i],

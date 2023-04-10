@@ -1,10 +1,9 @@
-
 import pandas as pd
 
-from ..._experimental_design._funcs._GTF_Module import _GTF
+from ..._experimental_design._general._GTF_Module import _GTF
+
 
 def _get_gene_df_from_gtf(gtf_file, gene, chromosome):
-
     """"""
 
     GeneDict = {}
@@ -24,7 +23,6 @@ def _get_gene_df_from_gtf(gtf_file, gene, chromosome):
 
 
 def _get_feature(df, feature="exon"):
-
     """"""
 
     df_ = (
@@ -37,7 +35,6 @@ def _get_feature(df, feature="exon"):
 
 
 def _get_gene_exons(gene, chromosome, gtf_path):
-
     """"""
 
     gtf = _GTF(gtf_path)

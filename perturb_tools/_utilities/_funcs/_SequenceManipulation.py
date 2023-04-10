@@ -1,4 +1,3 @@
-
 class _SequenceManipulation:
 
     """
@@ -22,14 +21,12 @@ class _SequenceManipulation:
     """
 
     def __init__(self, sequence):
-
         self.sequence = sequence
         self.ComplimentDict = {"C": "G", "G": "C", "T": "A", "A": "T", "N": "N"}
         self.complement_sequence = ""
         self.reverse_complement_sequence = ""
 
     def complement(self):
-
         """
         Get the complement of a DNA sequence.
 
@@ -51,7 +48,6 @@ class _SequenceManipulation:
         return self.complement_sequence
 
     def reverse(self):
-
         """
         Get the reverse of a DNA sequence.
 
@@ -71,7 +67,6 @@ class _SequenceManipulation:
         self.reverse_sequence = self.sequence[::-1]
 
     def reverse_complement(self):
-
         """
         Get the reverse complement of a DNA sequence.
 
@@ -87,7 +82,7 @@ class _SequenceManipulation:
         ------
         (1) No dependencies required. Pure python.
         """
-        
+
         ComplimentDict = self.ComplimentDict
         complement_sequence = ""
         for nucleotide in self.sequence:

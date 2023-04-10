@@ -1,10 +1,12 @@
-
+from typing import Optional
 import numpy as np
 import pandas as pd
 from ..._arithmetic._funcs._SequenceManipulation import _SequenceManipulation
 
-def _add_protospacer_sequence(df, chromosome_seq, strand):
 
+def _add_protospacer_sequence(
+    df, chromosome_seq, strand: str = "+"
+) -> Optional[pd.DataFrame]:
     """Add the sequence of the protospacer and the PAM to the df."""
 
     df["PAM_loci"] = df.PAM_loci.astype(int)
@@ -13,8 +15,7 @@ def _add_protospacer_sequence(df, chromosome_seq, strand):
     guide_seqs = np.array([])
 
     if strand == "+":
-
-        for i in df['PAM_loci']:
+        for i in df["PAM_loci"]:
             pam_seqs = np.append(pam_seqs, chromosome_seq[i : i + 3])
         for i in df.index:
             guide_seqs = np.append(
@@ -22,28 +23,30 @@ def _add_protospacer_sequence(df, chromosome_seq, strand):
             )
 
     elif strand == "-":
-
-        for i in df['PAM_loci']:            
+        for i in df["PAM_loci"]:
             pam_seq = _SequenceManipulation(chromosome_seq[i - 3 : i])
             pam_seqs = np.append(pam_seqs, pam_seq.reverse_complement())
-                
+
         for i in df.index:
-            guide_seq = _SequenceManipulation(chromosome_seq[df.guide_end[i] : df.guide_begin[i]])
+            guide_seq = _SequenceManipulation(
+                chromosome_seq[df.guide_end[i] : df.guide_begin[i]]
+            )
             guide_seqs = np.append(guide_seqs, guide_seq.reverse_complement())
     else:
-        print("Strand unassigned. Interrupting.")
-        return
+        raise ValueError(
+            f"Unsupported strand: {strand}. Provide valid option among '+' and '-'"
+        )
 
     df["PAM"] = pam_seqs
     df["protospacer"] = guide_seqs
 
     return df
 
-def _annotate_protospacer(df, chromosome_seq):
 
+def _annotate_protospacer(df, chromosome_seq) -> pd.DataFrame:
     """
-    Annotate protospacers and PAM sequence. 
-    
+    Annotate protospacers and PAM sequence.
+
     Annotate df with information about guide protospacer loci and sequence.
     Splits df into forward and reverse strand, adds loci of protospacer then recombines as before.
     """

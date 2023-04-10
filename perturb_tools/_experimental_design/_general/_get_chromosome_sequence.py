@@ -1,15 +1,15 @@
-
 # _get_chromosome_sequence.py
 __module_name__ = "_get_chromosome_sequence.py"
 __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 # package imports #
+from Bio import SeqIO
+
 # --------------- #
 
 
-def _get_chromosome_sequence(ref_seq_path, query_chr):
-
+def _get_chromosome_sequence(ref_seq_path, query_chr) -> str:
     """
     Get a specific chromosome sequence from a reference genome. Also report the length of that sequence.
     Parameters:
@@ -30,8 +30,7 @@ def _get_chromosome_sequence(ref_seq_path, query_chr):
     """
 
     for record in SeqIO.parse(ref_seq_path, "fasta"):
-
         if record.description.split()[0] == query_chr:
             chromosome_reference_seq = str(record.seq)
-
             return chromosome_reference_seq
+    raise ValueError("Could not find query chromosome in reference genome")
