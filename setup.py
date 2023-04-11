@@ -29,6 +29,7 @@ setup(
         "plotly",
         "regex",
         "openpyxl",
+        "seaborn",
     ],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",

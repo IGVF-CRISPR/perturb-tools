@@ -1,8 +1,6 @@
 # main __init__.py
 
-
 from . import _arithmetic as calc
-from . import _experimental_design as design
 from . import _external_tools as tools
 from . import _preprocessing as pp
 from . import _plotting as pl
