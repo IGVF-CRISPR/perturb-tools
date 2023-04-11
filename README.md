@@ -18,7 +18,8 @@ import perturb_tools as pt
 
 Data format and organization of metadata surrounding a multidimensional experiment is inspired by [AnnData](https://anndata.readthedocs.io/en/stable/) and [MuData](https://mudata.readthedocs.io/en/latest/), a useful solution for the analogous organization of single-cell data.
 <br></br>
-<img src="docs/images/screendata.svg" width="600"/>
+<img src="docs/images/mudata_schema.png" width="800"/>
+(image credit to @logan-blaine)
 
 ### The three main components of this data strcuture:
 
