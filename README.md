@@ -28,7 +28,7 @@ Data format and organization of metadata surrounding a multidimensional experime
 
 * **`screen.var`** (pandas DataFrame) of shape: `[guides x guide_annotation]`
 
-See the [**tutorial**](notebooks/anndata_demo.ipynb) for more information.
+See the [**tutorial**](notebooks/bulk/basic_api_demo.ipynb) for more information.
 
 
 ## Installation
@@ -79,7 +79,7 @@ Adhering to the above structure (or some structure - as long as it follows somew
 
 In order to stay organzed, let's all contribute through PRs. Think of a PR as the main topic you are planning to contribute (`qc` or `guide_counting`). If PRs and issues are foreign to you, just ask! The best way to learn git workflows is through doing. Every time we open a PR, we should organize sub-tasks as issues and link them to that PR. Conversations, feedback, and requested changes can all be mediated through the PRs. 
 
-## General analysis Steps
+## General Analysis Steps
 * See [**tutorial**](perturb_tools/notebooks) which includes:
   * Bulk screen data
     * [API tutorial with AnnData](perturb_tools/notebooks/anndata_demo.ipynb)
