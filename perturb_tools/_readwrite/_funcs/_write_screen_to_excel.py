@@ -1,7 +1,11 @@
 # _write_multi_df_to_excel.py
 __module_name__ = "_write_multi_df_to_excel.py"
 __author__ = ", ".join(["Michael E. Vinyard"])
-__email__ = ", ".join(["vinyard@g.harvard.edu",])
+__email__ = ", ".join(
+    [
+        "vinyard@g.harvard.edu",
+    ]
+)
 
 # package imports #
 # --------------- #
@@ -13,80 +17,101 @@ from ._check_fix_file_extension import _check_fix_file_extension
 
 
 def _append_dfs_and_name_from_dict(df_dict, df_list, sheet_names):
-    
     subclass = "df_dict={}".format(df_dict).split("=")[0]
-    
+
     for key in df_dict.keys():
         df_list.append(df_dict[key])
         sheet_names.append(".".join([subclass, key]))
     return df_list, sheet_names
 
-def _collect_screen_dfs(screen, include_uns = False):
 
+def _collect_screen_dfs(screen, include_uns=False, guide_rows=True):
     """collect all main elements of a screen as a pandas DataFrame."""
 
-    df_list = [pd.DataFrame(screen.X, index = screen.guides.index, columns = screen.condit.index)]
+    if guide_rows:
+        df_list = [
+            pd.DataFrame(screen.X.T, index=screen.var.index, columns=screen.obs.index)
+        ]
+    else:
+        df_list = [
+            pd.DataFrame(screen.X, index=screen.obs.index, columns=screen.var.index)
+        ]
     sheet_names = ["X"]
     for key, mat in screen.layers.items():
-        df_list.append(pd.DataFrame(mat, index = screen.guides.index, columns = screen.condit.index))
+        if guide_rows:
+            df_list.append(
+                pd.DataFrame(mat.T, index=screen.var.index, columns=screen.obs.index)
+            )
+        else:
+            df_list.append(
+                pd.DataFrame(mat, index=screen.obs.index, columns=screen.var.index)
+            )
         sheet_names.append(key)
 
-    df_list.extend([screen.guides, screen.condit])
-    sheet_names.extend(['guides', 'condit'])
+    df_list.extend([screen.var, screen.obs])
+    sheet_names.extend(["guides", "samples"])
 
-    for i in [screen.condit_m, screen.condit_p]:
+    for i in [screen.obsm, screen.obsp]:
         df_list, sheet_names = _append_dfs_and_name_from_dict(i, df_list, sheet_names)
 
     if include_uns:
         for key in screen.uns.keys():
             df_list.append(pd.DataFrame(screen.uns[key]))
             sheet_names.append(".".join(["screen.uns", key]))
-        
+
     return df_list, sheet_names
 
 
+# TODO: this function should be exported as different, simpler name
 def _write_screen_to_excel(
-    screen, workbook_path="./CRISPR_screen.xlsx", index=True, silent=False, include_uns = False
+    screen,
+    workbook_path="./CRISPR_screen.xlsx",
+    index=True,
+    silent=False,
+    include_uns=False,
+    guide_rows=True,
 ):
-    
     """
-    Write one or more pandas.DataFrames to individual sheets of an Excel Workbook (workbook.xlsx). 
-    
+    Write one or more pandas.DataFrames to individual sheets of an Excel Workbook (workbook.xlsx).
+
     Parameters:
     -----------
     df_list
         type: list(pd.DataFrame, ...)
-    
+
     workbook_path
         type: str
-   
+
     index
         default: False
         type: bool
-        
+
     silent
         default: False
         type: bool
-        
+    guide_rows
+        If True, anndata is transposed to output (guide x sample) matrix.
+
     Returns:
     --------
     None
         writes to excel workbook (.xlsx)
-        
+
     Notes:
     ------
-    (1) 
+    (1)
     """
-    
-    df_list, sheetnames = _collect_screen_dfs(screen, include_uns = include_uns)
-    workbook_path = _check_fix_file_extension(workbook_path, ".xlsx", silent)
-    
-    assert len(df_list) == len(sheetnames), print(
-    "Length of df_list must equal the length of sheet names passed."
-    )
-    
-    with pd.ExcelWriter(workbook_path) as writer:
 
+    df_list, sheetnames = _collect_screen_dfs(
+        screen, include_uns=include_uns, guide_rows=guide_rows
+    )
+    workbook_path = _check_fix_file_extension(workbook_path, ".xlsx", silent)
+
+    assert len(df_list) == len(sheetnames), print(
+        "Length of df_list must equal the length of sheet names passed."
+    )
+
+    with pd.ExcelWriter(workbook_path) as writer:
         if not silent:
             print("Writing to: {}\n".format(workbook_path))
 
@@ -100,6 +125,10 @@ def _write_screen_to_excel(
             try:
                 df_.to_excel(writer, sheet, index=index)
             except ValueError as e:
-                print("While writing {}, following error occurred: passing the data.".format(n))
+                print(
+                    "While writing {}, following error occurred: passing the data.".format(
+                        n
+                    )
+                )
                 print(e)
                 continue

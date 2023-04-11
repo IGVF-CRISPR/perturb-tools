@@ -16,9 +16,10 @@ import perturb_tools as pt
 
 ```
 
-Data format and organization of metadata surrounding a multidimensional experiment is inspired by [AnnData](https://anndata.readthedocs.io/en/stable/), a useful solution for the analogous organization of single-cell data.
+Data format and organization of metadata surrounding a multidimensional experiment is inspired by [AnnData](https://anndata.readthedocs.io/en/stable/) and [MuData](https://mudata.readthedocs.io/en/latest/), a useful solution for the analogous organization of single-cell data.
 <br></br>
-<img src="docs/images/screendata.svg" width="600"/>
+<img src="docs/images/mudata_schema.png" width="800"/>
+(image credit to @logan-blaine)
 
 ### The three main components of this data strcuture:
 
@@ -28,7 +29,7 @@ Data format and organization of metadata surrounding a multidimensional experime
 
 * **`screen.var`** (pandas DataFrame) of shape: `[guides x guide_annotation]`
 
-See the [**tutorial**](notebooks/anndata_demo.ipynb) for more information.
+See the [**tutorial**](notebooks/bulk/basic_api_demo.ipynb) for more information.
 
 
 ## Installation
@@ -42,35 +43,15 @@ git clone https://github.com/IGVF-CRISPR/perturb-tools.git
 cd ./perturb-tools; pip install -e .
 ```
 
-## General analysis Steps
-* See [**tutorial**](perturb_tools/screen_demo.ipynb) which includes:
-  * **API tutorial**
-  * **Normalization**
-  * **Arithmetic**
-     * Calculating the mean, standard deviation, and log-fold change between/across replicates
-     * Correlation calculation
-* **Hit discovery** (under development)
-* **Visualization** (under development)
-
-### Items under consideration:
-1. Sequence prediction of targeted base-edit
-2. TF motif annotation
-
-   a. Occupancy of Cas9 for CRISPRi (and how this may disrupt a TF motif)
-   
-   b. Putative creation / destruction of TF motifs upon predicted base-editing outcome
-=======
-# sccrispr-tools
-Utility package for single-cell CRISPR screens pipeline with paired single-cell omics and guide counts
 
 ### Planning
 
-We have a **[PR](https://github.com/IGVF-CRISPR/sccrispr-tool/pull/1)** for planning laying out modules and sub-modules for key functionalities required for the first-draft pipeline.
+We have a **[PR](https://github.com/IGVF-CRISPR/perturb-tools/pull/2)** for planning laying out modules and sub-modules for key functionalities required for the first-draft pipeline.
 
 In general the structure could look something like the following:
 
 ```
-IGVF-CRISPR/sccrispr-tools/
+IGVF-CRISPR/perturb-tools/
 │
 ├── LICENSE
 ├── notebooks
@@ -80,15 +61,19 @@ IGVF-CRISPR/sccrispr-tools/
 ├── requirements.txt
 ├── setup.py
 │
-├── sccrispr-tools/
-│   ├── __init__.py
-│   ├── framework/
-│   │    ├── ...
+├── perturb-tools/
+│   ├── __init__.py  
 │   │    
-│   ├── plotting/
+│   ├── _qc/
 │   │    ├── ...
-│   │    
-│   ├── qc/
+│   │  
+│   ├── _preprocessing/
+│   │    ├── ...
+│   │  
+│   ├── _tools/
+│   │    ├── ...
+│   │  
+│   ├── _plotting/
 │   │    ├── ...
 │   │     
 │   ├── _external_tools/
@@ -102,4 +87,10 @@ Adhering to the above structure (or some structure - as long as it follows somew
 
 In order to stay organzed, let's all contribute through PRs. Think of a PR as the main topic you are planning to contribute (`qc` or `guide_counting`). If PRs and issues are foreign to you, just ask! The best way to learn git workflows is through doing. Every time we open a PR, we should organize sub-tasks as issues and link them to that PR. Conversations, feedback, and requested changes can all be mediated through the PRs. 
 
+## General Analysis Steps
+* See [**tutorial**](perturb_tools/notebooks) which includes:
+  * Bulk screen data
+    * [API tutorial with AnnData](perturb_tools/notebooks/anndata_demo.ipynb)
+    * [API tutorial with Perturb-tools](perturb_tools/notebooks/bulk/basic_api_demo.ipynb)
+      * Arithmetic: Calculating the mean, standard deviation, and log-fold change between/across replicates
 
