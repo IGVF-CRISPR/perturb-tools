@@ -25,23 +25,33 @@ def _append_dfs_and_name_from_dict(df_dict, df_list, sheet_names):
     return df_list, sheet_names
 
 
-def _collect_screen_dfs(screen, include_uns=False):
+def _collect_screen_dfs(screen, include_uns=False, guide_rows=True):
     """collect all main elements of a screen as a pandas DataFrame."""
 
-    df_list = [
-        pd.DataFrame(screen.X, index=screen.guides.index, columns=screen.condit.index)
-    ]
+    if guide_rows:
+        df_list = [
+            pd.DataFrame(screen.X.T, index=screen.var.index, columns=screen.obs.index)
+        ]
+    else:
+        df_list = [
+            pd.DataFrame(screen.X, index=screen.obs.index, columns=screen.var.index)
+        ]
     sheet_names = ["X"]
     for key, mat in screen.layers.items():
-        df_list.append(
-            pd.DataFrame(mat, index=screen.guides.index, columns=screen.condit.index)
-        )
+        if guide_rows:
+            df_list.append(
+                pd.DataFrame(mat.T, index=screen.var.index, columns=screen.obs.index)
+            )
+        else:
+            df_list.append(
+                pd.DataFrame(mat, index=screen.obs.index, columns=screen.var.index)
+            )
         sheet_names.append(key)
 
-    df_list.extend([screen.guides, screen.condit])
-    sheet_names.extend(["guides", "condit"])
+    df_list.extend([screen.var, screen.obs])
+    sheet_names.extend(["guides", "samples"])
 
-    for i in [screen.condit_m, screen.condit_p]:
+    for i in [screen.obsm, screen.obsp]:
         df_list, sheet_names = _append_dfs_and_name_from_dict(i, df_list, sheet_names)
 
     if include_uns:
@@ -59,6 +69,7 @@ def _write_screen_to_excel(
     index=True,
     silent=False,
     include_uns=False,
+    guide_rows=True,
 ):
     """
     Write one or more pandas.DataFrames to individual sheets of an Excel Workbook (workbook.xlsx).
@@ -78,6 +89,8 @@ def _write_screen_to_excel(
     silent
         default: False
         type: bool
+    guide_rows
+        If True, anndata is transposed to output (guide x sample) matrix.
 
     Returns:
     --------
@@ -89,7 +102,9 @@ def _write_screen_to_excel(
     (1)
     """
 
-    df_list, sheetnames = _collect_screen_dfs(screen, include_uns=include_uns)
+    df_list, sheetnames = _collect_screen_dfs(
+        screen, include_uns=include_uns, guide_rows=guide_rows
+    )
     workbook_path = _check_fix_file_extension(workbook_path, ".xlsx", silent)
 
     assert len(df_list) == len(sheetnames), print(
