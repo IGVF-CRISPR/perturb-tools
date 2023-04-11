@@ -62,11 +62,19 @@ IGVF-CRISPR/perturb-tools/
 │
 ├── perturb-tools/
 │   ├── __init__.py  
-│   ├── _plotting/
-│   │    ├── ...
 │   │    
 │   ├── _qc/
 │   │    ├── ...
+│   │  
+│   ├── _preprocessing/
+│   │    ├── ...
+│   │  
+│   ├── _tools/
+│   │    ├── ...
+│   │  
+│   ├── _plotting/
+│   │    ├── ...
+
 │   │     
 │   ├── _external_tools/
 │   │    ├── .../
