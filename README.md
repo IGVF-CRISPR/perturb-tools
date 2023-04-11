@@ -14,20 +14,9 @@
 ```python
 import perturb_tools as pt
 
-screen = pt.Screen(X)
-```
-```
-Genome Editing Screen composed of: n_guides x n_conditions = 946 x 12
-
-   guides:    'barcode', 'barcode_id', 'experiment', 'sequence', 'target_id', 'pred_ABE_edit', 'pred_CBE_edit'
-   condit:    'conditions'
-   condit_m:  'barcode_counts', 'unexpected_sequences'
-   condit_p:  'correlation'
-   layers:    'X_lognorm'
-   uns:       'run_info', 'poolq3', 'metadata', 'SampleBarcodeReadCounts', 'CommonSampleBarcodeReadCounts'
 ```
 
-This format and organization of metadata surrounding a multidimensional experiment is inspired by [AnnData](https://anndata.readthedocs.io/en/stable/), a useful solution for the analogous organization of single-cell data.
+Data format and organization of metadata surrounding a multidimensional experiment is inspired by [AnnData](https://anndata.readthedocs.io/en/stable/), a useful solution for the analogous organization of single-cell data.
 <br></br>
 <img src="docs/images/screendata.svg" width="600"/>
 
@@ -35,11 +24,11 @@ This format and organization of metadata surrounding a multidimensional experime
 
 * **`screen.X`** (Numpy array)
 
-* **`screen.condit`** (pandas DataFrame) of shape: `[conditions x condition_annotation]`
+* **`screen.obs`** (pandas DataFrame) of shape: `[conditions x condition_annotation]`
 
-* **`screen.guides`** (pandas DataFrame) of shape: `[guides x guide_annotation]`
+* **`screen.var`** (pandas DataFrame) of shape: `[guides x guide_annotation]`
 
-See the [**tutorial**](perturb_tools/screen_demo.ipynb) for more information.
+See the [**tutorial**](notebooks/anndata_demo.ipynb) for more information.
 
 
 ## Installation
@@ -47,7 +36,7 @@ See the [**tutorial**](perturb_tools/screen_demo.ipynb) for more information.
 **Install the development package**:
 ```BASH
 # (1) clone this repository
-git clone https://github.com/pinellolab/perturb-tools.git
+git clone https://github.com/IGVF-CRISPR/perturb-tools.git
 
 # (2) install the local project in editable mode
 cd ./perturb-tools; pip install -e .
@@ -70,3 +59,47 @@ cd ./perturb-tools; pip install -e .
    a. Occupancy of Cas9 for CRISPRi (and how this may disrupt a TF motif)
    
    b. Putative creation / destruction of TF motifs upon predicted base-editing outcome
+=======
+# sccrispr-tools
+Utility package for single-cell CRISPR screens pipeline with paired single-cell omics and guide counts
+
+### Planning
+
+We have a **[PR](https://github.com/IGVF-CRISPR/sccrispr-tool/pull/1)** for planning laying out modules and sub-modules for key functionalities required for the first-draft pipeline.
+
+In general the structure could look something like the following:
+
+```
+IGVF-CRISPR/sccrispr-tools/
+│
+├── LICENSE
+├── notebooks
+│   ├── examples
+│   
+├── README.md
+├── requirements.txt
+├── setup.py
+│
+├── sccrispr-tools/
+│   ├── __init__.py
+│   ├── framework/
+│   │    ├── ...
+│   │    
+│   ├── plotting/
+│   │    ├── ...
+│   │    
+│   ├── qc/
+│   │    ├── ...
+│   │     
+│   ├── _external_tools/
+│   │    ├── .../
+│   │    
+```
+
+Adhering to the above structure (or some structure - as long as it follows somewhat closely to the [PEP8 style guide](https://www.python.org/dev/peps/pep-0008/) will enable seamless collaboration regardless of the module you're working on - this is especially important for code review. 
+
+### Contributing
+
+In order to stay organzed, let's all contribute through PRs. Think of a PR as the main topic you are planning to contribute (`qc` or `guide_counting`). If PRs and issues are foreign to you, just ask! The best way to learn git workflows is through doing. Every time we open a PR, we should organize sub-tasks as issues and link them to that PR. Conversations, feedback, and requested changes can all be mediated through the PRs. 
+
+
