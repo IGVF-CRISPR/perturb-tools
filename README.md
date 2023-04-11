@@ -90,7 +90,10 @@ In order to stay organzed, let's all contribute through PRs. Think of a PR as th
 ## General Analysis Steps
 * See [**tutorial**](perturb_tools/notebooks) which includes:
   * Bulk screen data
-    * [API tutorial with AnnData](perturb_tools/notebooks/anndata_demo.ipynb)
+    * [API tutorial with AnnData](perturb_tools/notebooks/bulk/anndata_demo.ipynb)
     * [API tutorial with Perturb-tools](perturb_tools/notebooks/bulk/basic_api_demo.ipynb)
       * Arithmetic: Calculating the mean, standard deviation, and log-fold change between/across replicates
+    * [QC tutorial](perturb_tools/notebooks/bulk/sample_quality_report.ipynb)
+      * Per-sample guide coverage, guide coverage uniformity, and sample guide count LFC correlation
+      * Identify outlier guides
 
