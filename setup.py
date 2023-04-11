@@ -7,7 +7,7 @@ import sys
 
 setup(
     name="perturb-tools",
-    version="0.1.4",
+    version="0.2.0",
     python_requires=">3.7.0",
     author=[
         "Michael E. Vinyard - Harvard University - Massachussetts General Hospital - Broad Institute of MIT and Harvard",
@@ -29,6 +29,7 @@ setup(
         "plotly",
         "regex",
         "openpyxl",
+        "seaborn",
     ],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
