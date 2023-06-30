@@ -68,7 +68,7 @@ def _set_sample_correlation(
 
 def get_outlier_guides(
     screen: AnnData,
-    condit_col: str,
+    cond_col: str,
     count_layer: Optional[str] = None,
     mad_z_thres: float = 5,
     abs_RPM_thres: float = 10000,
@@ -77,7 +77,7 @@ def get_outlier_guides(
 
     Args:
         screen (AnnData): Annotated data matrix.
-        condit_col (str): Column name in obs where experimental conditions are annotated.
+        cond_col (str): Column name in obs where experimental conditions are annotated.
         count_layer (Optional[str], optional): Name of layer used for quantification. Defaults to None.
         mad_z_thres (float, optional): Threshold (in MAD units) above which guides will be considered as outliers. Defaults to 5.
         abs_RPM_thres (float, optional): RPM threshold above which guides will be considered as outliers. Defaults to 10000.
@@ -105,8 +105,8 @@ def get_outlier_guides(
         )
     aberr_dict = {}
 
-    for cond in screen.obs[condit_col].unique():
-        screen_subset = screen[screen.obs[condit_col] == cond, :].copy()
+    for cond in screen.obs[cond_col].unique():
+        screen_subset = screen[screen.obs[cond_col] == cond, :].copy()
         median_p = np.nanmedian(
             screen_subset.layers[f"{count_layer_label}_RPM"], axis=1
         )

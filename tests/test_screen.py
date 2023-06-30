@@ -11,7 +11,9 @@ def screen():
         X=np.random.randint(low=0, high=1000, size=(4, 3)),
         dtype=int,
         var=pd.DataFrame(
-            {"target": ["t1", "t1", "t2"]},
+            {
+                "target": ["t1", "t1", "t2"],
+            },
             index=["g1", "g2", "g3"],
         ),
         obs=pd.DataFrame(
@@ -48,3 +50,22 @@ class TestClass:
         pt.pp.log_norm(screen)
         pt.io.to_Excel(screen, "test.xlsx")
         pt.io.to_mageck_input(screen, "test.txt", target_column="target")
+
+
+class TestQC:
+    def test_sample_count_dist_plots(self, screen):
+        pt.pl.sample_count_dist(screen)
+        pt.pl.sample_count_gini(screen)
+
+    def test_sample_count_corr_plots(self, screen):
+        pt.pl.sample_count_correlation(screen)
+
+    def test_sample_lfc_plots(self, screen):
+        pt.pp.log_norm(screen)
+        pt.pl.sample_lfcs_correlation(screen, cond1=0, cond2=1, cond_col="condition")
+
+    def test_outlier_identification(self, screen):
+        pt.qc.get_outlier_guides(
+            screen,
+            cond_col="condition",
+        )
