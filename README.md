@@ -88,12 +88,12 @@ Adhering to the above structure (or some structure - as long as it follows somew
 In order to stay organzed, let's all contribute through PRs. Think of a PR as the main topic you are planning to contribute (`qc` or `guide_counting`). If PRs and issues are foreign to you, just ask! The best way to learn git workflows is through doing. Every time we open a PR, we should organize sub-tasks as issues and link them to that PR. Conversations, feedback, and requested changes can all be mediated through the PRs. 
 
 ## General Analysis Steps
-* See [**tutorial**](perturb_tools/notebooks) which includes:
+* See [**tutorial**](notebooks/) which includes:
   * Bulk screen data
-    * [API tutorial with AnnData](perturb_tools/notebooks/bulk/anndata_demo.ipynb)
-    * [API tutorial with Perturb-tools](perturb_tools/notebooks/bulk/basic_api_demo.ipynb)
+    * [API tutorial with AnnData](notebooks/bulk/anndata_demo.ipynb)
+    * [API tutorial with Perturb-tools](notebooks/bulk/basic_api_demo.ipynb)
       * Arithmetic: Calculating the mean, standard deviation, and log-fold change between/across replicates
-    * [QC tutorial](perturb_tools/notebooks/bulk/sample_quality_report.ipynb)
+    * [QC tutorial](notebooks/bulk/sample_quality_report.ipynb)
       * Per-sample guide coverage, guide coverage uniformity, and sample guide count LFC correlation
       * Identify outlier guides
 
