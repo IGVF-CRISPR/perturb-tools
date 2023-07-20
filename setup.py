@@ -7,7 +7,7 @@ import sys
 
 setup(
     name="perturb-tools",
-    version="0.2.0",
+    version="0.2.1",
     python_requires=">3.7.0",
     author=[
         "Michael E. Vinyard - Harvard University - Massachussetts General Hospital - Broad Institute of MIT and Harvard",
